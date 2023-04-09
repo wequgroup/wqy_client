@@ -2,15 +2,8 @@
   <v-container>
     <v-row dense>
       <v-col cols="12">
-        <v-card
-          class="mx-auto"
-          max-width="400"
-          elevation="3"
-        >
-          <v-img
-            src="@/assets/login.png"
-            height="100px"
-          ></v-img>
+        <v-card class="mx-auto" max-width="400" elevation="3">
+          <v-img src="@/assets/login.png" height="100px"></v-img>
 
           <v-card-title>
             登录您的WEQU账户
@@ -19,46 +12,16 @@
           <v-card-subtitle>
             1,020+ 用户正在使用
           </v-card-subtitle>
-          <v-form
-            ref="form"
-            v-model="valid"
-            lazy-validation
-            class="login"
-          >
-            <v-text-field
-              v-model="email"
-              :rules="emailRules"
-              label="你的邮箱"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model="password"
-              :rules="passwordRules"
-              label="你的密码"
-              type="password"
-              required
-            ></v-text-field>
-            <v-checkbox
-              v-model="checkbox"
-              :rules="[v => !!v || '建议你还是勾上哦!']"
-              label="自动登录?"
-              required
-            ></v-checkbox>
+          <v-form ref="form" v-model="valid" lazy-validation class="login">
+            <v-text-field v-model="email" :rules="emailRules" label="你的邮箱" required></v-text-field>
+            <v-text-field v-model="password" :rules="passwordRules" label="你的密码" type="password" required></v-text-field>
+            <v-checkbox v-model="checkbox" label="记住我?" required></v-checkbox>
             <div class="loginBtn">
-              <v-btn
-                :disabled="!valid"
-                color="success"
-                class="mr-4"
-                @click="verificationCode"
-              >
+              <v-btn :disabled="!valid" color="success" class="mr-4" @click="verificationCode">
                 立刻登录
               </v-btn>
 
-              <v-btn
-                color="error"
-                class="mr-4"
-                @click="reset"
-              >
+              <v-btn color="error" class="mr-4" @click="reset">
                 注册新账号
               </v-btn>
             </div>
@@ -76,42 +39,43 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-snackbar
-      v-model="snackbar"
-      vertical
-      location="top"
-    >
+    <v-snackbar v-model="snackbar" vertical location="top">
       <div class="text-subtitle-1 pb-2">发生了错误</div>
       <p>{{ tips }}</p>
       <template v-slot:actions>
-        <v-btn
-          color="pink"
-          variant="text"
-          @click="snackbar = false"
-        >
+        <v-btn color="pink" variant="text" @click="snackbar = false">
           关闭
         </v-btn>
       </template>
     </v-snackbar>
+    <v-dialog v-model="login" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          <span style="font-size: 12px;letter-spacing: 2px;vertical-align: 10px;">正在登录到WEQU.NET ...</span>
+          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
-import {getCurrentInstance} from "vue";
-import {da} from "vuetify/locale";
+import { getCurrentInstance } from "vue";
 
 export default {
 
   data: () => ({
+    login: false,
+    r: getCurrentInstance()?.appContext.config.globalProperties.$router,
     tips: "",
     snackbar: false,
     valid: true,
-    password: '',
+    password: null,
     apiPost: getCurrentInstance()?.appContext.config.globalProperties.$post,
     passwordRules: [
       v => !!v || '密码必须输入',
       v => (v && v.length >= 6),
     ],
-    email: '',
+    email: null,
     emailRules: [
       v => !!v || '好像不是正确的邮箱格式',
       v => /.+@.+\..+/.test(v) || '请输入正确的邮箱',
@@ -125,7 +89,7 @@ export default {
       let captchaId = "2096394456"; //腾讯滑块验证码appid
       const captcha = new TencentCaptcha(captchaId, function (res) {
         if (res.ret === 0) {
-          console.log(res)
+          _this.login = true
           const data = {
             ticket: res.ticket,
             randStr: res.randstr,
@@ -133,7 +97,25 @@ export default {
             password: _this.password
           }
           _this.apiPost("/login", data).then(res => {
-            console.log(res)
+            if (res.code === 200) {
+              localStorage.setItem("token", res.token)
+              if (_this.checkbox === true) {
+                localStorage.setItem("username", _this.email)
+                localStorage.setItem("password", _this.password)
+                localStorage.setItem("checkbox", "true")
+              } else {
+                localStorage.removeItem("username")
+                localStorage.removeItem("password")
+                localStorage.setItem("checkbox", "false")
+              }
+              _this.$router.push({
+                path: '/device'
+              })
+            } else {
+              _this.login = false
+              _this.snackbar = true
+              _this.tips = res.msg
+            }
           })
         }
       });
@@ -149,7 +131,11 @@ export default {
     }
   },
   mounted() {
-    console.log(this.api)
+    if (localStorage.getItem("checkbox") === "true") {
+      this.checkbox = true
+      this.email = localStorage.getItem("username")
+      this.password = localStorage.getItem("password")
+    }
   }
 }
 </script>

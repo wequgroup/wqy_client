@@ -1,11 +1,10 @@
 import axios from 'axios';
-import QS from 'qs';
 
 axios.defaults.baseURL = 'http://localhost:8080'
 
 axios.interceptors.request.use( //响应拦截
         async config => {
-            config.headers.Authorization = 'Bearer ' + sessionStorage.getItem('token')
+            config.headers.Authorization = 'Bearer ' + localStorage.getItem("token")
             return config;
         },
         error => {
