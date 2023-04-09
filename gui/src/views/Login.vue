@@ -1,21 +1,19 @@
 <template>
-  <v-container>
+  <v-container style="padding: 0">
     <v-row dense>
-      <v-col cols="12">
-        <v-card class="mx-auto" max-width="400" elevation="3">
-          <v-img src="@/assets/login.png" height="100px"></v-img>
-
+      <v-col cols="24">
+        <v-card class="mx-auto" max-width="600" elevation="0" style="border-radius: 0!important;">
+          <v-img src="@/assets/login.png" height="150px"></v-img>
           <v-card-title>
             登录您的WEQU账户
           </v-card-title>
-
           <v-card-subtitle>
             1,020+ 用户正在使用
           </v-card-subtitle>
           <v-form ref="form" v-model="valid" lazy-validation class="login">
             <v-text-field v-model="email" :rules="emailRules" label="你的邮箱" required></v-text-field>
             <v-text-field v-model="password" :rules="passwordRules" label="你的密码" type="password" required></v-text-field>
-            <v-checkbox v-model="checkbox" label="记住我?" required></v-checkbox>
+            <v-checkbox v-model="checkbox" label="记住我?" required style="margin-top: -24px;"></v-checkbox>
             <div class="loginBtn">
               <v-btn :disabled="!valid" color="success" class="mr-4" @click="verificationCode">
                 立刻登录
@@ -141,7 +139,9 @@ export default {
 </script>
 <style scoped>
 .login {
-  padding: 10px;
+    padding: 100px;
+    margin-top: -80px;
+    margin-bottom: -76px;
 }
 
 :deep(.v-img__img--contain) {
