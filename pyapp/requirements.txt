@@ -3,4 +3,5 @@ pyinstaller==5.8.0
 tinyaes==1.0.4
 sqlalchemy==2.0.5
 alembic==1.10.2
-pyautogui==0.9.53
+pynput==1.7.6
+loguru==0.7.0

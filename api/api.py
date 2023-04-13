@@ -12,16 +12,18 @@ usage: 调用window.pywebview.api.<methodname>(<parameters>)从Javascript执行
 import getpass
 import json
 import os
-from pyapp.db.orm import ORM
+
 import webview
+
+from pyapp.db.orm import ORM
 
 
 class API:
-    '''本地API，供前端JS调用'''
+    """本地API，供前端JS调用"""
 
     window = None
 
-    orm = ORM()    # 操作数据库类
+    orm = ORM()  # 操作数据库类
 
     def getOwner(self):
         # 调用js挂载的函数，返回结果可在控制台查看
@@ -29,7 +31,7 @@ class API:
 
         # 获取数据库的值
         author = self.orm.getStorageVar('author')
-        print('author', author)    # python打印结果可在终端查看
+        print('author', author)  # python打印结果可在终端查看
 
         return getpass.getuser()
 
@@ -42,8 +44,9 @@ class API:
         '''打开文件对话框'''
         # 可选文件类型
         # fileTypes = ['Excel表格 (*.xlsx;*.xls)']
-        fileTypes = tuple(fileTypes)    # 要求必须是元组
-        result = API.window.create_file_dialog(dialog_type=webview.OPEN_DIALOG, directory=directory, allow_multiple=True, file_types=fileTypes)
+        fileTypes = tuple(fileTypes)  # 要求必须是元组
+        result = API.window.create_file_dialog(dialog_type=webview.OPEN_DIALOG, directory=directory,
+                                               allow_multiple=True, file_types=fileTypes)
         resList = list()
         if result is not None:
             for res in result:
