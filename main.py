@@ -56,8 +56,8 @@ def WebViewApp(ifCef=False):
         template = os.path.join(MAIN_DIR, "index.html")  # 设置页面，指向本地
 
     # 创建窗口
-    window = webview.create_window(title=Config.appName, url=template, js_api=api, width=590, height=600,
-                                   min_size=(600, 500), resizable=False)
+    window = webview.create_window(title=Config.appName, url=template,
+                                   js_api=api, width=590, height=600, resizable=False)
 
     # 获取窗口实例
     API.window = window
