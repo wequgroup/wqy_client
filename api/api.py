@@ -12,7 +12,7 @@ usage: 调用window.pywebview.api.<methodname>(<parameters>)从Javascript执行
 import getpass
 import json
 import os
-
+from pyapp.script.action_record import ActionRecord
 import webview
 
 from pyapp.db.orm import ORM
@@ -25,6 +25,12 @@ class API:
 
     orm = ORM()  # 操作数据库类
 
+    def record(self):
+        self.py2js({'tip': '来自py的调用'})
+        _record = ActionRecord()
+        _record.run()
+        return "ok"
+
     def getOwner(self):
         # 调用js挂载的函数，返回结果可在控制台查看
         self.py2js({'tip': '来自py的调用'})
@@ -32,7 +38,6 @@ class API:
         # 获取数据库的值
         author = self.orm.getStorageVar('author')
         print('author', author)  # python打印结果可在终端查看
-
         return getpass.getuser()
 
     def py2js(self, info):

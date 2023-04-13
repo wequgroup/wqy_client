@@ -13,8 +13,8 @@ import axios from 'axios';
 import VueAxios from 'vue-axios'
 
 const routes = [
-   { path: '/device', component: Device },
-  { path: '/', component: Login }
+   { path: '/', component: Device },
+  { path: '/device', component: Login }
 ]
 const router = createRouter({
   history: createWebHashHistory(),
