@@ -1,13 +1,15 @@
 <template>
-  <v-card style="border-radius: 0!important;">
-    <v-layout>
+  <v-card style="border-radius: 0!important;height: 100%;">
+    <v-layout style="height: 100%;">
       <v-navigation-drawer theme="dark" rail permanent>
         <v-list-item nav prepend-avatar="@/assets/avatar.png"></v-list-item>
         <v-divider></v-divider>
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-monitor-cellphone-star" value="dashboard" @click="showDiv('showDevice')">
+          <v-list-item prepend-icon="mdi-cards-variant" value="dashboard" @click="showDiv('showDevice')">
           </v-list-item>
-          <v-list-item prepend-icon="mdi-forum" value="messages" @click="showDiv('showRecord')"></v-list-item>
+          <v-list-item prepend-icon="mdi-file-video" value="messages" @click="showDiv('showRecord')"></v-list-item>
+          <v-list-item prepend-icon="mdi-cog" value="messages" @click="showDiv('showRecord')"></v-list-item>
+
         </v-list>
       </v-navigation-drawer>
       <v-main style="height: 561px">
