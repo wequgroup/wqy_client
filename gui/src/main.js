@@ -7,7 +7,7 @@ import {createRouter, createWebHashHistory} from 'vue-router'
 // Components
 import App from './App.vue'
 import Login from '@/views/Login.vue'
-import Device from '@/views/Device.vue'
+import Device from '@/views/device/index.vue'
 import  Axios   from './utils/request'
 import axios from 'axios';
 import VueAxios from 'vue-axios'
