@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8"/>
-    <link rel="icon" href="/favicon.ico"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link href="/icon1.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/icon1.css" rel="stylesheet" />
     <title>微趣鸭</title>
     <style>
-    ::-webkit-scrollbar{
-      display:none
-    }
-	body{
-	 	height: 100%!important;
-	    width: 100%!important;
-	    position: fixed!important;
-	    top: 0!important;
-	    left: 0!important;
-	}
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      body {
+        height: 100% !important;
+        width: 100% !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        background: transparent;
+        border-radius: 20px;
+       
+      }
+      #app{
+        border-right: 1px solid rgb(33,33,33);
+        border-top: 1px solid rgb(33,33,33);
+      }
     </style>
-</head>
+  </head>
 
-<body>
-<div id="app"></div>
-<script type="module" src="/src/main.js"></script>
-<script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
-</body>
+  <body>
+    <div id="app" class="pywebview-drag-region"></div>
+    <script type="module" src="/src/main.js"></script>
+    <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+  </body>
 </html>

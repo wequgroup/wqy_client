@@ -75,7 +75,7 @@
     background-repeat: no-repeat;
     background-size: 400px;
     background-position: center;
-    background-image: url(https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/f94d7a166959367.64217374abf3e.gif);
+    background-image: url(@/assets/device_online.gif);
   }
 
   .device-offline {
@@ -100,7 +100,7 @@
   .log {
     position: absolute;
     z-index: 888;
-    top: 80px;
+    top: 100px;
     left: 71px;
     background: black;
     height: 400px;
@@ -114,38 +114,15 @@
     border-radius: 5px;
   }
 
-  /*滚动条样式*/
-  .log::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 4px;
-    /*高宽分别对应横竖滚动条的尺寸*/
-    height: 4px;
-  }
-
-  .log::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 5px;
-    -webkit-box-shadow: inset005pxrgba(0, 0, 0, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-    /*设置滚动条颜色*/
-  }
-
-  .log::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    -webkit-box-shadow: inset005pxrgba(0, 0, 0, 0.2);
-    border-radius: 0;
-    background: rgba(0, 0, 0, 0.1);
-  }
-
   .view-log-btn {
     position: absolute;
-    top: 80px;
+    top: 100px;
     left: 72px;
   }
 
   .view-close-log-btn {
     position: absolute;
-    top: 80px;
+    top: 100px;
     right: 18px;
     z-index: 999;
   }

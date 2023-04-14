@@ -12,7 +12,7 @@
 
         </v-list>
       </v-navigation-drawer>
-      <v-main style="height: 561px">
+      <v-main style="height: 561px;margin-top: 20px;">
         <Device v-if="pageDict.showDevice" />
         <Record v-if="pageDict.showRecord" />
       </v-main>

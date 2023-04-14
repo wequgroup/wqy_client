@@ -10,8 +10,7 @@ usage: 运行前，请确保本机已经搭建Python3开发环境，且已经安
 '''
 
 import argparse
-from create_window import win
-
+from init import app
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -20,4 +19,4 @@ if __name__ == "__main__":
 
     ifCef = args.if_cef  # 是否开启cef模式
 
-    win(ifCef)
+    app(ifCef)

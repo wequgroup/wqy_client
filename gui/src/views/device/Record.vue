@@ -41,7 +41,7 @@
         </v-col>
       </v-row>
       <div class="record-btn">
-        <v-btn><span class="mdi mdi-timer-play micon"></span>
+        <v-btn @click="setScript"><span class="mdi mdi-timer-play micon"></span>
           录制脚本</v-btn>
         <v-btn style="margin-left: 17px;" color="indigo">
           <span class="mdi mdi-video-box micon"></span>
@@ -103,7 +103,7 @@
     }),
     methods: {
       setScript() {
-        window.pywebview.api.record().then((res) => {
+        window.pywebview.api.hide().then((res) => {
           console.log(res)
         })
       }

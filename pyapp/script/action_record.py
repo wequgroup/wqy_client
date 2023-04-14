@@ -25,6 +25,7 @@ class ActionRecord:
         :param key:
         :return:
         """
+        print("按下了" + str(key))
         if key != keyboard.Key.esc:
             try:
                 self.record.append({"key": key.char, "action": "pressed_key", "_time": time.time()})
