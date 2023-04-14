@@ -1,5 +1,5 @@
 <template>
-  <v-card style="border-radius: 0!important;height: 100%;">
+  <v-card style="border-radius: 0!important;height: 100%;margin-top: 0px;">
     <v-layout style="height: 100%;">
       <v-navigation-drawer theme="dark" rail permanent>
         <v-list-item nav prepend-avatar="@/assets/avatar.png"></v-list-item>

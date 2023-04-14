@@ -10,11 +10,11 @@
       <v-btn @click="showLog=false" density="compact" icon="mdi-eye-off-outline" size="small"></v-btn>
     </div>
     <div class="log" v-if="showLog">
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
+      <p>12:30:00 - 下发1指令：hello wordhello wordhello wordhello wordhello wordhello wordhello wordhello word</p>
+      <p>12:30:01 - 下发3指令：hello word</p>
+      <p>12:30:02 - 下发4指令：hello word</p>
+      <p>12:30:03 - 下发指令：hello word</p>
+      <p>12:30:04 - 下发指令：hello word</p>
       <p>12:30:00 - 下发指令：hello word</p>
       <p>12:30:00 - 下发指令：hello word</p>
       <p>12:30:00 - 下发指令：hello word</p>
