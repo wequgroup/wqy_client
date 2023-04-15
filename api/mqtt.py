@@ -30,16 +30,13 @@ class MQTT:
                 time.sleep(15)
 
     def on_connect(self, client, userdata, rc, msg):
-        a = open('log.txt', 'a', encoding="utf-8")
-        a.write('3追加写入' + str(msg))
-        a.close()
         if msg == 5:
             print("鉴权失败，不重连")
             self.auto_online = False
             self.stop = True
             self.client.loop_stop()
         if msg == 0:
-            data = {"ok": "yes"}
+            data = {"online": "success"}
             self.win.evaluate_js(f"connectSuccess('{json.dumps(data)}')")
 
     def on_message(self, client, userdata, rc):

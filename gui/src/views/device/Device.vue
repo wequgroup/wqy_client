@@ -48,7 +48,8 @@
               </div>
             </v-card-text>
           </v-card>
-          <div class="device-online"></div>
+          <div class="device-online" v-if="deviceOnline"></div>
+          <div class="device-offline" v-if="!deviceOnline"></div>
           <v-btn block @click="addDialog = true" v-if="!notDevice" color="info">
             <span class="mdi mdi-plus"></span> 添加一个设备
           </v-btn>
@@ -102,23 +103,29 @@ export default {
       })
     },
     connectService(res) {
-      console.log("connect")
-      window.pywebview.api.connect(res).then((res) => {
+        setTimeout(() => {
+           window.pywebview.api.connect(res).then((res) => {
         console.log(res)
       })
+    }, 200)
     },
     connectSuccess() {
       window['connectSuccess'] = (resJson) => {
+        console.log("dddddd")
         const res = JSON.parse(resJson)
-        console.log(res)
+        if (res.online === 'success') {
+          console.log("上线成功")
+          this.deviceOnline = true
+        }
       }
     }
   },
   mounted() {
+    this.connectSuccess()
     setTimeout(() => {
       window.pywebview.api.get_device().then((res) => {
         this.deviceInfo = res
-        this.connectService(res)
+        //this.connectService(res)
       })
     }, 800)
   },

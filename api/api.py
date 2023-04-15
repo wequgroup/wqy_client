@@ -49,7 +49,6 @@ class API:
             self.start_mq = True
             mq = MQTT("49137218", "234234", "mqtt-hw.wequ.net", 1883, False, API.window)
             mq.start()
-
         return "ok"
 
     def start_listen_key(self):
