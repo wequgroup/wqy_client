@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Author: 潘高
-LastEditors: 潘高
+Author: Mon
+LastEditors: Mon
 Date: 2023-03-12 20:08:30
 LastEditTime: 2023-03-15 22:40:34
 Description: 数据库类
@@ -10,11 +10,12 @@ usage: 运行前，请确保本机已经搭建Python3开发环境，且已经安
 '''
 
 import os
+import sys
 from shutil import copyfile
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-
-from pyapp.config.config import Config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config.config import Config
 
 
 class DB:

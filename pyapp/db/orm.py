@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Author: 潘高
-LastEditors: 潘高
+Author: Mon
+LastEditors: Mon
 Date: 2023-03-12 20:08:30
 LastEditTime: 2023-03-15 22:29:38
 Description: 操作数据库类
@@ -14,7 +14,7 @@ usage:
     print('author', author)
 '''
 
-from pyapp.db.models import StorageVar
+from pyapp.db.models import StorageVar, Device, Record
 from pyapp.db.db import DB
 from sqlalchemy import select, update, insert
 
@@ -46,3 +46,23 @@ class ORM:
             stmt = update(StorageVar).where(StorageVar.key == key).values(value=val)
             dbSession.execute(stmt)
         dbSession.close()
+
+    def get_device(self):
+        """获取设备"""
+        db_session = DB.session()
+        with db_session.begin():
+            stmt = select(Device.device_id, Device.device_password, Device.device_name, Device.auto_online)
+            result = db_session.execute(stmt)
+            resp = result.one_or_none()
+            data = {"device_id": resp[0], "device_password": resp[1], "device_name": resp[2], "auto_online": resp[3]}
+        db_session.close()
+        return data
+
+    def update_device(self, device_id, device_password):
+        """更新储存变量"""
+        db_session = DB.session()
+        with db_session.begin():
+            stmt = update(Device).where(Device.device_id == device_id).values(device_id=device_id,
+                                                                              device_password=device_password)
+            db_session.execute(stmt)
+        db_session.close()

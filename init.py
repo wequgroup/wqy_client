@@ -7,12 +7,10 @@ from api.api import API
 from pyapp.config.config import Config
 from pyapp.db.db import DB
 
+api = API()  # 本地接口
 cfg = Config()  # 配置
 db = DB()  # 数据库类
-api = API()  # 本地接口
-
 cfg.init()
-
 
 def on_minimized():
     pass
@@ -57,7 +55,6 @@ def app(ifCef=False):
 
     # 获取窗口实例
     API.window = window
-    
     # 绑定事件
     window.events.shown += on_shown
     window.events.loaded += on_loaded
@@ -67,6 +64,5 @@ def app(ifCef=False):
 
     # CEF模式
     guiCEF = 'cef' if ifCef else None
-
     # 启动窗口
     webview.start(debug=Config.devEnv, http_server=True, gui=guiCEF)

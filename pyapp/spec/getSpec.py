@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Author: 潘高
-LastEditors: 潘高
+Author: Mon
+LastEditors: Mon
 Date: 2022-03-23 09:05:53
 LastEditTime: 2023-03-14 21:13:46
 Description: 生成 .spec APP配置文件

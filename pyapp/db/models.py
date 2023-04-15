@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 '''
 FilePath: /vue-pywebview-pyinstaller/pyapp/db/models.py
-Author: 潘高
-LastEditors: 潘高
+Author: Mon
+LastEditors: Mon
 Date: 2023-03-12 20:29:49
 LastEditTime: 2023-03-14 23:35:35
 Description: 创建数据表
@@ -22,7 +22,7 @@ Base = declarative_base()
 
 
 class BaseModel(Base):
-    '''基类'''
+    """基类"""
     __abstract__ = True
 
     def _gen_tuple(self):
@@ -32,6 +32,7 @@ class BaseModel(Base):
                 return value.strftime("%Y-%m-%d %H:%M:%S")
             else:
                 return ""
+
         for col in self.__table__.columns:
             try:
                 if isinstance(col.type, DateTime):
@@ -55,7 +56,7 @@ class BaseModel(Base):
 
 
 class StorageVar(BaseModel):
-    '''储存变量'''
+    """储存变量"""
     __tablename__ = "storage_var"
     id = Column(Integer, primary_key=True, autoincrement=True)
     key = Column(String(), doc='键', nullable=False, index=True)
@@ -66,3 +67,25 @@ class StorageVar(BaseModel):
 
     def __str__(self):
         return self.key + ' => ' + self.value
+
+
+class Device(BaseModel):
+    """设备表"""
+    __tablename__ = "device"
+    device_id = Column(String(), primary_key=True)
+    device_password = Column(String(), doc='值', server_default='', nullable=False)
+    device_name = Column(String(), doc='值', server_default='', nullable=False)
+    auto_online = Column(String(), doc='值', server_default='', nullable=False)
+    def __str__(self):
+        return self.device_id + ' => ' + self.device_password
+
+
+class Record(BaseModel):
+    """脚本记录表"""
+    __tablename__ = "record"
+    record_id = Column(String(), primary_key=True)
+    record_content = Column(String(), doc='值', server_default='', nullable=False)
+    record_name = Column(String(), doc='值', server_default='', nullable=False)
+
+    def __str__(self):
+        return self.record_id + ' => ' + self.record_content

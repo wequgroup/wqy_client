@@ -277,8 +277,8 @@ m=备注迁移信息 npm run alembic
 
 ---
 
-更多编程教学请关注公众号：**潘高陪你学编程**
+更多编程教学请关注公众号：**Mon陪你学编程**
 
-![image](https://blog.pangao.vip/pic/潘高陪你学编程.jpg)
+![image](https://blog.pangao.vip/pic/Mon陪你学编程.jpg)
 
 ---

@@ -27,7 +27,7 @@ npm manifest:
     "private": true,
     "version": "3.0.0",
     "description": "基于pywebview和PyInstaller框架，构建macOS和windows平台的客户端。本应用的视图层支持Vue、React、Angular、HTML中的任意一种，业务层采用本地Python+调用远程API。",
-    "author": "潘高 <pangao1990@qq.com>",
+    "author": "Mon <pangao1990@qq.com>",
     "scripts": {
       "initComments": "清空缓存，配置环境",
       "init": "npm install -D shx && npm run clean && npm install && npm run initInstall",

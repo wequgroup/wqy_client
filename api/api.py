@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Author: 潘高
-LastEditors: 潘高
+Author: Mon
+LastEditors: Mon
 Date: 2022-03-21 17:01:39
 LastEditTime: 2023-03-12 21:44:44
 Description: 本地API，供前端JS调用
@@ -11,29 +11,46 @@ usage: 调用window.pywebview.api.<methodname>(<parameters>)从Javascript执行
 
 import getpass
 import json
-import os
 from pyapp.script.action_record import ActionRecord
-import webview
 from pynput import keyboard
 from pyapp.db.orm import ORM
 import _thread
+from api.mqtt import MQTT
 
 
 class API:
     """本地API，供前端JS调用"""
 
     window = None
-
     orm = ORM()  # 操作数据库类
 
     def __init__(self):
+        super().__init__()
         self.win_show = True
         self.listen = False
+        self.thread_mqtt = None
+        self.start_mq = False
         self.start_listen_key()
 
     def listen_key(self):
+        """
+        监听热键
+        """
         with keyboard.Listener(on_press=self.key_press) as listener:
             listener.join()
+
+    def get_device(self):
+        """获取所有的设备"""
+        return self.orm.get_device()
+
+    def connect(self, data):
+        """获取所有的设备"""
+        if self.start_mq is False:
+            self.start_mq = True
+            mq = MQTT("49137218", "234234", "mqtt-hw.wequ.net", 1883, False, API.window)
+            mq.start()
+
+        return "ok"
 
     def start_listen_key(self):
         if self.listen is False:
@@ -57,15 +74,18 @@ class API:
         return "ok"
 
     def hide(self):
+        """隐藏"""
         self.window.hide()
         self.win_show = False
         return "ok"
 
     def minisize(self):
+        """最小化"""
         self.window.minimize()
         return "ok"
 
     def close(self):
+        """退出"""
         self.window.destroy()
         return "ok"
 

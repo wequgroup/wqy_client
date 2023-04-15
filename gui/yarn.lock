@@ -433,7 +433,7 @@
 
 "vue-pywebview-pyinstaller@file:..":
   "resolved" "file:.."
-  "version" "3.0.0"
+  "version" "0.0.1"
   dependencies:
     "qs" "^6.11.1"
 
@@ -464,3 +464,9 @@
   "integrity" "sha512-Egb0oFEga6f+nSgasH3E0M405Pzn6y3/9tOVanv/DLfa1YBIgcv90L18YyWnvXkRbIM17v5Kv6IT2N6g1x5tvQ=="
   "resolved" "https://registry.npmmirror.com/webfontloader/-/webfontloader-1.6.28.tgz"
   "version" "1.6.28"
+
+"wqy_client@file:..":
+  "resolved" "file:.."
+  "version" "0.0.1"
+  dependencies:
+    "qs" "^6.11.1"

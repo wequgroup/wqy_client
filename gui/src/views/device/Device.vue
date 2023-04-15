@@ -1,41 +1,15 @@
 <template>
-  <div class="device-online">
+  <div class="">
     <div class="view-log-btn">
-      <v-btn size="small" text v-if="!showLog" @click="showLog=true">
+      <v-btn size="small" text v-if="!showLog" @click="showLog = true">
         <span class="mdi mdi-eye-arrow-right-outline"></span>
         &nbsp;查看日志
       </v-btn>
     </div>
     <div class="view-close-log-btn" v-if="showLog">
-      <v-btn @click="showLog=false" density="compact" icon="mdi-eye-off-outline" size="small"></v-btn>
+      <v-btn @click="showLog = false" density="compact" icon="mdi-eye-off-outline" size="small"></v-btn>
     </div>
     <div class="log" v-if="showLog">
-      <p>12:30:00 - 下发1指令：hello wordhello wordhello wordhello wordhello wordhello wordhello wordhello word</p>
-      <p>12:30:01 - 下发3指令：hello word</p>
-      <p>12:30:02 - 下发4指令：hello word</p>
-      <p>12:30:03 - 下发指令：hello word</p>
-      <p>12:30:04 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
       <p>12:30:00 - 下发指令：hello word</p>
       <p>12:30:00 - 下发指令：hello word</p>
       <p>12:30:00 - 下发指令：hello word</p>
@@ -46,84 +20,182 @@
     <v-container style="height: 100%;">
       <v-row no-gutters>
         <v-col cols="12" md="8">
-          <v-select :items="[1,2]" label="选择一个设备进行登录" variant="solo"></v-select>
+          <v-card class="mx-auto device-card" prepend-icon="mdi-monitor-cellphone-star" elevation="5">
+            <template v-slot:title>
+              <div style="font-size: 15px;font-weight: 600;display: inline;">{{ this.deviceInfo.device_name }}</div>
+              <div class="auto-online"><v-switch label="自动连接" true-value="yes" false-value="no"
+                  v-model="deviceInfo.auto_online" color="brown lighten-5"></v-switch></div>
+            </template>
+            <v-card-text>
+              <div style="padding-left: 13px;">
+                This is content
+              </div>
+              <div style="float: right;margin-bottom: 10px;">
+                <v-tooltip text="强行断开，不会自动重连" location="start">
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" size="small" variant="text">
+                      <span class="mdi mdi-web-off" style="font-size: 1.8em;color: #fff;"></span>
+                    </v-btn>
+                  </template>
+                </v-tooltip>
+                <v-tooltip text="不会从服务器删除，只删除本地的设备" location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" size="small" variant="text">
+                      <span class="mdi mdi-trash-can-outline" style="font-size: 1.8em;color: #fff;"></span>
+                    </v-btn>
+                  </template>
+                </v-tooltip>
+              </div>
+            </v-card-text>
+          </v-card>
+          <div class="device-online"></div>
+          <v-btn block @click="addDialog = true" v-if="!notDevice" color="info">
+            <span class="mdi mdi-plus"></span> 添加一个设备
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
-    <div class="connect">
-      <v-btn color="warning" dark>与服务端断开连接</v-btn>
-    </div>
+    <v-dialog max-width="480" v-model="addDialog" transition="dialog-top-transition">
+      <v-card>
+        <v-card-text>
+          <br>
+          <v-text-field density="compact" placeholder="请输入设备ID" prepend-inner-icon="mdi-monitor-cellphone-star"
+            variant="outlined" v-model="deviceId"></v-text-field>
+          <v-text-field v-model="devicePassword" :append-inner-icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="passwordVisible ? 'text' : 'password'" density="compact" placeholder="请输入设备密码"
+            prepend-inner-icon="mdi-lock-outline" variant="outlined"
+            @click:append-inner="passwordVisible = !passwordVisible"></v-text-field>
+          <v-card class="mb-12" color="surface-variant" variant="tonal">
+            <v-card-text class="text-medium-emphasis text-caption">
+              设备id和设备密钥可在 <a href="https://app.wequ.net" target="_blank">设备管理后台</a> 上查看，如果你不会使用，建议你先看看视频教程进行学习！
+            </v-card-text>
+          </v-card>
+          <v-btn color="info" block @click="addDevice" elevated>添加设备</v-btn>
+          <br>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
-  import {
-    getCurrentInstance
-  } from "vue";
+import { getCurrentInstance } from 'vue'
 
-  export default {
-    data: () => ({
-      showLog: false
-    }),
-    methods: {
-
+export default {
+  data: () => ({
+    ctx: getCurrentInstance()?.appContext.config.globalProperties,
+    deviceInfo: { "device_id": null, "device_name": '加载中...', "device_password": null, "auto_online": 'no' },
+    showLog: false,
+    addDialog: false,
+    notDevice: true,
+    passwordVisible: false,
+    deviceId: '',
+    devicePassword: '',
+    deviceOnline: false
+  }),
+  methods: {
+    addDevice() {
+      console.log(this.deviceId, this.devicePassword)
+    },
+    getDevice() {
+      window.pywebview.api.get_device().then((res) => {
+        console.log(res)
+      })
+    },
+    connectService(res) {
+      console.log("connect")
+      window.pywebview.api.connect(res).then((res) => {
+        console.log(res)
+      })
+    },
+    connectSuccess() {
+      window['connectSuccess'] = (resJson) => {
+        const res = JSON.parse(resJson)
+        console.log(res)
+      }
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      window.pywebview.api.get_device().then((res) => {
+        this.deviceInfo = res
+        this.connectService(res)
+      })
+    }, 800)
+  },
+  created() {
+
   }
+}
 </script>
 <style>
-  .device-online {
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: 400px;
-    background-position: center;
-    background-image: url(@/assets/device_online.gif);
-  }
+.device-card {
+  background-color: #0093E9;
+  background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+  color: #fff;
+}
 
-  .device-offline {
-    height: 100%;
-    background-repeat: no-repeat;
-    background-size: 320px;
-    top: tdsdsdaasda;
-    background-position: center;
-    background-image: url(@/assets/device_offline.png);
-    -webkit-filter: grayscale(100%);
-    filter: grayscale(100%);
-  }
+.device-card i.mdi-monitor-cellphone-star.mdi.v-icon.notranslate.v-theme--light.v-icon--size-default {
+  color: #fff;
+}
 
-  .connect {
-    position: absolute;
-    bottom: 20px;
-    text-align: center;
-    width: 100%;
-    margin-left: -30px;
-  }
+.auto-online {
+  width: 130px;
+  position: absolute;
+  right: 0;
+  top: 0px;
+}
 
-  .log {
-    position: absolute;
-    z-index: 888;
-    top: 100px;
-    left: 71px;
-    background: black;
-    height: 400px;
-    width: 505px;
-    opacity: 0.4;
-    color: #fff;
-    padding: 10px;
-    font-size: 14px;
-    overflow-y: scroll;
-    overflow-x: scroll;
-    border-radius: 5px;
-  }
+.device-online {
+  height: 500px;
+  margin-top: -33px;
+  background-repeat: no-repeat;
+  background-size: 400px;
+  background-position: center;
+  background-image: url(@/assets/device_online.gif);
+}
 
-  .view-log-btn {
-    position: absolute;
-    top: 100px;
-    left: 72px;
-  }
+.device-offline {
+  height: 500px;
+  margin-top: -33px;
+  background-repeat: no-repeat;
+  background-size: 320px;
+  background-position: center;
+  background-image: url(@/assets/device_offline.png);
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
 
-  .view-close-log-btn {
-    position: absolute;
-    top: 100px;
-    right: 18px;
-    z-index: 999;
-  }
+.log {
+  position: absolute;
+  z-index: 888;
+  top: 160px;
+  left: 74px;
+  background: black;
+  height: 430px;
+  width: 505px;
+  opacity: 0.4;
+  color: #fff;
+  padding: 10px;
+  font-size: 14px;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  border-radius: 5px;
+}
+
+.view-log-btn {
+  position: absolute;
+  top: 170px;
+  left: 73px;
+}
+
+.view-close-log-btn {
+  position: absolute;
+  top: 155px;
+  right: 18px;
+  z-index: 999;
+}
+
+/* .v-input__details {
+    display: none;
+} */
 </style>

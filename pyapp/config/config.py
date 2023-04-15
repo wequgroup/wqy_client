@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Author: 潘高
-LastEditors: 潘高
+Author: Mon
+LastEditors: Mon
 Date: 2022-03-21 16:54:23
 LastEditTime: 2023-03-15 16:48:01
 Description: 配置文件
