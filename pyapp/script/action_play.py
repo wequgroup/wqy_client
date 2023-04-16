@@ -16,8 +16,8 @@ special_keys = {"Key.shift": Key.shift, "Key.tab": Key.tab, "Key.caps_lock": Key
 
 
 class ActionPlay:
-    def __init__(self, script_name="./test.txt", run_count=1, sleep_time=None):
-        self.script_name = script_name
+    def __init__(self, content, run_count=1, sleep_time=None):
+        self.content = content
         self.script_data = None
         self.mouse = MouseController()
         self.keyboard = KeyboardController()
@@ -25,8 +25,7 @@ class ActionPlay:
         self.sleep_time = sleep_time
 
     def load_script(self):
-        with open(self.script_name) as json_file:
-            self.script_data = json.load(json_file)
+        self.script_data = json.loads(self.content)
 
     def run(self):
         self.load_script()

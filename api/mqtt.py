@@ -1,5 +1,3 @@
-import sys
-
 import paho.mqtt.client as mqtt
 import time
 import json
@@ -42,22 +40,27 @@ class MQTT:
             print("鉴权失败，不重连")
             self.auto_online = False
             self.stop = True
-            data = {"online": "error"}
-            # self.win.evaluate_js(f"connectSuccess('{json.dumps(data)}')")
+            log = {"msg": "登录失败，可能设备在其他地方登录，或设备信息错误"}
+            self.win.evaluate_js(f"writeLog('{json.dumps(log)}')")
             self.client.loop_stop()
         if msg == 0:
             data = {"online": "success"}
             self.win.evaluate_js(f"connectSuccess('{json.dumps(data)}')")
+            self.write_log("设备连接服务端成功")
 
     def on_message(self, client, userdata, rc):
         """收到消息了"""
         msg = rc.payload  # 将信息转换成json格式
         try:
             params = json.loads(msg)
-            # self.win.evaluate_js(f"connectSuccess('{msg}')")
+            self.write_log(params["shellContent"])
         except:
             return False
         return True
+
+    def write_log(self, msg):
+        log = {"msg": msg, "time": time.strftime('%H:%M:%S')}
+        self.win.evaluate_js(f"writeLog('{json.dumps(log)}')")
 
     def ping(self):
         """50秒发个心跳"""
@@ -71,14 +74,14 @@ class MQTT:
 
     def start(self):
         # 连接到MQTT服务器
-        print("Connecting to MQTT broker...")
+        self.write_log("连接服务器中...")
         rc = self.client.connect(self.host, self.port)
         if rc == 0:
             self.client.subscribe(topic=str("duck/" + self.username), qos=0)
             self.client.loop_start()
             self.ping()
         else:
-            print("连接失败")
+            self.write_log("连接失败")
             pass
 
     def stop_mq(self):
@@ -89,5 +92,6 @@ class MQTT:
                 self.client.loop_stop()
                 self.event.set()
                 g.STOP_MQ = False
+                self.write_log("设备已下线.")
                 break
             time.sleep(0.2)

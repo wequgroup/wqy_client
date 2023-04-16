@@ -16,7 +16,7 @@ usage:
 
 from pyapp.db.models import StorageVar, Device, Record
 from pyapp.db.db import DB
-from sqlalchemy import select, update, insert
+from sqlalchemy import select, update, insert, delete
 
 
 class ORM:
@@ -47,6 +47,54 @@ class ORM:
             dbSession.execute(stmt)
         dbSession.close()
 
+    def update_device(self, device_name, device_id, device_password, auto_inline):
+        db_session = DB.session()
+        with db_session.begin():
+            stmt = update(Device).where(Device.device_id == device_id).values(device_id=device_id,
+                                                                              device_password=device_password,
+                                                                              auto_online=auto_inline,
+                                                                              device_name=device_name)
+            db_session.execute(stmt)
+        db_session.close()
+
+    def get_record(self):
+        db_session = DB.session()
+        record_list = []
+        with db_session.begin():
+            stmt = select(Record.record_id, Record.record_name)
+            result = db_session.execute(stmt)
+            resp = result.all()
+            if resp is None:
+                return None
+            for r in resp:
+                data = {"record_id": r[0], "record_name": r[1]}
+                record_list.append(data)
+        db_session.close()
+        return record_list
+
+    def get_record_one(self, id):
+        db_session = DB.session()
+        with db_session.begin():
+            stmt = select(Record.record_content).where(Record.record_id == id)
+            result = db_session.execute(stmt)
+            result = result.one_or_none()
+        db_session.close()
+        return result[0]
+
+    def delete_record(self, id):
+        db_session = DB.session()
+        with db_session.begin():
+            stmt = delete(Record).where(Record.record_id == id)
+            db_session.execute(stmt)
+        db_session.close()
+
+    def add_record(self, id, name, content):
+        db_session = DB.session()
+        with db_session.begin():
+            stmt = insert(Record).values(record_id=id, record_name=name, record_content=content)
+            db_session.execute(stmt)
+        db_session.close()
+
     def get_device(self):
         """获取设备"""
         db_session = DB.session()
@@ -64,15 +112,6 @@ class ORM:
         db_session = DB.session()
         with db_session.begin():
             stmt = insert(Device).values(device_id=device_id, device_password=device_password,
-                                         auto_online=auto_inline,device_name=device_name)
-            db_session.execute(stmt)
-        db_session.close()
-
-    def update_device(self, device_id, device_password):
-        """更新储存变量"""
-        db_session = DB.session()
-        with db_session.begin():
-            stmt = update(Device).where(Device.device_id == device_id).values(device_id=device_id,
-                                                                              device_password=device_password)
+                                         auto_online=auto_inline, device_name=device_name)
             db_session.execute(stmt)
         db_session.close()

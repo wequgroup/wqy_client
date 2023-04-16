@@ -3,7 +3,10 @@ import time, json
 
 
 class ActionRecord:
-    def __init__(self):
+    def __init__(self, orm, id, name):
+        self.orm = orm
+        self.id = id
+        self.name = name
         self.thread_mouse = mouse.Listener(on_click=self.on_mouse_click, on_scroll=self.on_scroll)
         self.thread_keyboard = keyboard.Listener(on_press=self.on_keyboard_press, on_release=self.on_keyboard_release)
         self.record = []
@@ -41,8 +44,7 @@ class ActionRecord:
         if key == keyboard.Key.esc:
             self.thread_mouse.stop()
             self.thread_keyboard.stop()
-            with open('./{}.txt'.format("test"), 'w') as outfile:
-                json.dump(self.record, outfile)
+            self.orm.add_record(self.id, self.name, json.dumps(self.record))
         else:
             try:
                 self.record.append({"key": key.char, "action": "released_key", "_time": time.time()})

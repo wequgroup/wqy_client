@@ -8,7 +8,7 @@
           <v-list-item prepend-icon="mdi-cards-variant" value="dashboard" @click="showDiv('showDevice')">
           </v-list-item>
           <v-list-item prepend-icon="mdi-file-video" value="messages" @click="showDiv('showRecord')"></v-list-item>
-          <v-list-item prepend-icon="mdi-cog" value="messages" @click="showDiv('showRecord')"></v-list-item>
+          <!-- <v-list-item prepend-icon="mdi-cog" value="messages" @click="showDiv('showRecord')"></v-list-item> -->
 
         </v-list>
       </v-navigation-drawer>

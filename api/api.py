@@ -9,9 +9,11 @@ Description: 本地API，供前端JS调用
 usage: 调用window.pywebview.api.<methodname>(<parameters>)从Javascript执行
 '''
 
+import random
 import getpass
 import json
 from pyapp.script.action_record import ActionRecord
+from pyapp.script.action_play import ActionPlay
 from pynput import keyboard
 from pyapp.db.orm import ORM
 import _thread
@@ -44,10 +46,15 @@ class API:
         return self.orm.get_device()
 
     def add_device(self, data: dict):
-        """添加设备"""
-        print(data)
-        self.orm.add_device(data.get("device_name"), data.get("device_id"),
-                            data.get("device_password"), data.get("auto_online"))
+        """添加设备或者更新设备"""
+        if data.get("action") == "add":
+            self.orm.add_device(data.get("device_name"), data.get("device_id"),
+                                data.get("device_password"), data.get("auto_online"))
+        else:
+            print(data.get("device_name"), data.get("device_id"),
+                  data.get("device_password"), data.get("auto_online"))
+            self.orm.update_device(data.get("device_name"), data.get("device_id"),
+                                   data.get("device_password"), data.get("auto_online"))
         return "ok"
 
     def connect(self, data):
@@ -59,8 +66,35 @@ class API:
         return "ok"
 
     def diss_connect(self):
+        """断开服务端"""
         g.STOP_MQ = True
         self.start_mq = False
+        return "ok"
+
+    def get_record(self):
+        return self.orm.get_record()
+
+    def set_record(self, name):
+        self.hide()
+        action = ActionRecord(self.orm, str(random.randint(100000, 999999)), name)
+        action.run()
+        self.window.show()
+        self.window.restore()
+        self.win_show = True
+        return "ok"
+
+    def run_record(self, id):
+        content = self.orm.get_record_one(id)
+        self.hide()
+        action = ActionPlay(content)
+        action.run()
+        self.window.show()
+        self.window.restore()
+        self.win_show = True
+        return "ok"
+
+    def delete_record(self, id):
+        self.orm.delete_record(id)
         return "ok"
 
     def start_listen_key(self):
@@ -77,12 +111,6 @@ class API:
             else:
                 self.window.hide()
                 self.win_show = False
-
-    def record(self):
-        self.py2js({'tip': '来自py的调用'})
-        _record = ActionRecord()
-        _record.run()
-        return "ok"
 
     def hide(self):
         """隐藏"""

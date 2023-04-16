@@ -22,18 +22,26 @@
             <v-table height="200px" density="compact" fixed-header>
               <thead>
                 <tr>
-                  <th class="text-left">
+                  <th class="text-left" style="width: 270px;">
                     脚本名称
                   </th>
                   <th class="text-left">
                     脚本ID
                   </th>
+                  <th class="text-left" style="width: 100px;">
+                    删除/测试
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in desserts" :key="item.name">
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.calories }}</td>
+                <tr v-for="item in desserts" :key="item.record_id">
+                  <td>{{ item.record_name }}</td>
+                  <td>{{ item.record_id }}</td>
+                  <td><span class="mdi mdi-delete-outline" style="font-size: 1.3em;color: black;cursor: pointer;"
+                      @click="deleteRecord(item.record_id)"></span>&nbsp;
+                    <span class="mdi mdi-play-circle-outline" style="font-size: 1.3em;color: black;cursor: pointer;"
+                      @click="runRecord(item.record_id)"></span>
+                  </td>
                 </tr>
               </tbody>
             </v-table>
@@ -41,7 +49,7 @@
         </v-col>
       </v-row>
       <div class="record-btn">
-        <v-btn @click="setScript"><span class="mdi mdi-timer-play micon"></span>
+        <v-btn @click="setRecordNameDialog = true"><span class="mdi mdi-timer-play micon"></span>
           录制脚本</v-btn>
         <v-btn style="margin-left: 17px;" color="indigo">
           <span class="mdi mdi-video-box micon"></span>
@@ -49,87 +57,104 @@
         </v-btn>
       </div>
     </v-container>
+    <v-dialog v-model="setRecordNameDialog" width="auto">
+      <v-card>
+        <v-card-text>
+          <v-alert density="compact" type="warning" title="请看这里"
+            text="点击开始录制后，此窗口会被隐藏，此时所有的操作都会记录，按下 Esc 键后退出录制"></v-alert>
+          <v-form @submit.prevent style="margin-top: 4px;">
+            <v-text-field v-model="recordName" :rules="rules" label="输入录制名称"></v-text-field>
+            <v-btn type="submit" block class="mt-2" @click="setRecord">点击开始录制</v-btn>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <v-snackbar v-model="snackbar" :timeout="4000">
+      {{ tipsText }}
+      <template v-slot:actions>
+        <v-btn color="blue" variant="text" @click="snackbar = false">
+          关闭
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
 <script>
-  import {
-    getCurrentInstance
-  } from "vue";
+import {
+  getCurrentInstance
+} from "vue";
 
-  export default {
-    data: () => ({
-      desserts: [{
-          name: 'Frozen Yogurt',
-          calories: 159,
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-        },
-      ]
-    }),
-    methods: {
-      setScript() {
-        window.pywebview.api.hide().then((res) => {
-          console.log(res)
-        })
+export default {
+  data: () => ({
+    tipsText: "",
+    desserts: [],
+    snackbar: false,
+    setRecordNameDialog: false,
+    recordName: '',
+    rules: [
+      value => {
+        if (value) return true
+        return '名称便于识别，必须设置一个'
+      },
+    ],
+  }),
+  methods: {
+    setRecordOk() {
+      window['setRecordOk'] = (resJson) => {
+        this.tipsText = "很好，你的脚本已经录制完成！"
       }
+    },
+    setRecord() {
+      window.pywebview.api.set_record(this.recordName).then((res) => {
+        this.setRecordNameDialog = false
+        this.getRecord()
+        this.snackbar = true
+      })
+    },
+    deleteRecord(id) {
+      window.pywebview.api.delete_record(id).then((res) => {
+        this.getRecord()
+      })
+    },
+    getRecord() {
+      window.pywebview.api.get_record().then((res) => {
+        this.desserts = res
+      })
+    },
+    runRecord(id) {
+      window.pywebview.api.run_record(id).then((res) => {
+        this.tipsText = "测试已经完成，还满意吗！"
+        this.snackbar = true
+      })
     }
+  },
+  mounted() {
+    this.getRecord()
+    this.setRecordOk()
   }
+}
 </script>
 
 <style>
-  .record {
-    font-size: 14px;
-  }
+.record {
+  font-size: 14px;
+}
 
-  .record-btn {
-    text-align: center;
-    margin-top: 50px;
-  }
+.record-btn {
+  text-align: center;
+  margin-top: 50px;
+}
 
-  .micon {
-    font-size: 20px;
-    font-weight: bold;
-    margin-right: 3px;
-    vertical-align: -1px;
-  }
+.micon {
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 3px;
+  vertical-align: -1px;
+}
 
-  .tip-icon {
-    margin-left: 3px;
-    margin-top: -10px;
-  }
+.tip-icon {
+  margin-left: 3px;
+  margin-top: -10px;
+}
 </style>

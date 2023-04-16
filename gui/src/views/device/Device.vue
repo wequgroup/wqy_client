@@ -10,12 +10,7 @@
       <v-btn @click="showLog = false" density="compact" icon="mdi-eye-off-outline" size="small"></v-btn>
     </div>
     <div class="log" v-if="showLog">
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
-      <p>12:30:00 - 下发指令：hello word</p>
+      <p v-for="i in logList">{{ i.time }} - {{ i.msg }}</p>
     </div>
     <v-container style="height: 100%;">
       <v-row no-gutters>
@@ -45,10 +40,10 @@
                     </v-btn>
                   </template>
                 </v-tooltip>
-                <v-tooltip text="不会从服务器删除，只删除本地的设备" location="bottom">
+                <v-tooltip text="编辑设备信息" location="bottom">
                   <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" size="small" variant="text">
-                      <span class="mdi mdi-trash-can-outline" style="font-size: 1.8em;color: #fff;"></span>
+                    <v-btn v-bind="props" size="small" variant="text" @click="addDialogClick('update')">
+                      <span class="mdi mdi-archive-edit" style="font-size: 1.8em;color: #fff;"></span>
                     </v-btn>
                   </template>
                 </v-tooltip>
@@ -80,7 +75,7 @@
               设备id和设备密钥可在 <a href="https://app.wequ.net" target="_blank">设备管理后台</a> 上查看，如果你不会使用，建议你先看看视频教程进行学习！
             </v-card-text>
           </v-card>
-          <v-btn color="info" block @click="addDevice" elevated :loading="addLoading">添加设备</v-btn>
+          <v-btn color="info" block @click="addDevice" elevated :loading="addLoading">保存设备信息</v-btn>
           <br>
         </v-card-text>
       </v-card>
@@ -104,9 +99,17 @@ export default {
     addError: false,
     addLoading: false,
     addErrorText: '',
-    deviceOnline: false
+    deviceOnline: false,
+    update: false,
+    logList: []
   }),
   methods: {
+    addDialogClick(action) {
+      if (action == "update") {
+        this.update = true
+      }
+      this.addDialog = true
+    },
     addDevice() {
       if (this.deviceInfo.device_id.length != 8 || this.deviceInfo.device_password.length < 6) {
         this.addError = true
@@ -121,7 +124,13 @@ export default {
         } else {
           this.deviceInfo.device_name = res.data.deviceName
           setTimeout(() => {
+            if (this.update == true) {
+              this.deviceInfo.action = "update"
+            } else {
+              this.deviceInfo.action = "add"
+            }
             window.pywebview.api.add_device(this.deviceInfo).then((res) => {
+              this.update == false
               if (res == "ok") {
                 this.addDialog = false
                 this.notDevice = false
@@ -141,6 +150,9 @@ export default {
           this.notDevice = true
         } else {
           this.deviceInfo = res
+          if (this.deviceInfo.auto_online == "yes") {
+            this.connectService(this.deviceInfo)
+          }
           this.notDevice = false
         }
       })
@@ -159,22 +171,28 @@ export default {
     },
     connectSuccess() {
       window['connectSuccess'] = (resJson) => {
-        console.log("dddddd")
         const res = JSON.parse(resJson)
         if (res.online === 'success') {
           console.log("上线成功")
           this.deviceOnline = true
         }
       }
+    },
+    writeLog() {
+      window['writeLog'] = (resJson) => {
+        const res = JSON.parse(resJson)
+        console.log(res)
+        this.logList.unshift(res)
+      }
     }
   },
   mounted() {
     let _this = this
-    window.addEventListener('pywebviewready', function() {
-      console.log("ddd")
+    window.addEventListener('pywebviewready', function () {
       _this.getDevice()
     })
     this.connectSuccess()
+    this.writeLog()
   },
   created() {
 
