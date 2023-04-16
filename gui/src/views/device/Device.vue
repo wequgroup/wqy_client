@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <div class="view-log-btn">
-      <v-btn size="small" text v-if="!showLog" @click="showLog = true">
+      <v-btn size="small" text v-if="!showLog && !notDevice" @click="showLog = true">
         <span class="mdi mdi-eye-arrow-right-outline"></span>
         &nbsp;查看日志
       </v-btn>
@@ -20,7 +20,10 @@
     <v-container style="height: 100%;">
       <v-row no-gutters>
         <v-col cols="12" md="8">
-          <v-card class="mx-auto device-card" prepend-icon="mdi-monitor-cellphone-star" elevation="5">
+          <v-btn block @click="addDialog = true" v-if="notDevice" color="info">
+            <span class="mdi mdi-plus"></span> 添加一个设备
+          </v-btn>
+          <v-card class="mx-auto device-card" prepend-icon="mdi-monitor-cellphone-star" elevation="5" v-if="!notDevice">
             <template v-slot:title>
               <div style="font-size: 15px;font-weight: 600;display: inline;">{{ this.deviceInfo.device_name }}</div>
               <div class="auto-online"><v-switch label="自动连接" true-value="yes" false-value="no"
@@ -28,12 +31,16 @@
             </template>
             <v-card-text>
               <div style="padding-left: 13px;">
-                This is content
+                <span v-if="!deviceOnline">未连接到服务器，请点&nbsp;<span class="mdi mdi-cast-connected"></span>&nbsp;按钮连接</span>
+                <span v-if="deviceOnline">已连接到服务器，点&nbsp;<span class="mdi mdi-web-off"></span>&nbsp;按钮可断开连接</span>
               </div>
               <div style="float: right;margin-bottom: 10px;">
-                <v-tooltip text="强行断开，不会自动重连" location="start">
+                <v-btn v-bind="props" size="small" variant="text" v-if="!deviceOnline" @click="connectService">
+                  <span class="mdi mdi-cast-connected" style="font-size: 1.8em;color: #fff;"></span>
+                </v-btn>
+                <v-tooltip text="强行断开，不会自动重连" location="start" v-if="deviceOnline">
                   <template v-slot:activator="{ props }">
-                    <v-btn v-bind="props" size="small" variant="text">
+                    <v-btn v-bind="props" size="small" variant="text" @click="dissConnect">
                       <span class="mdi mdi-web-off" style="font-size: 1.8em;color: #fff;"></span>
                     </v-btn>
                   </template>
@@ -50,9 +57,6 @@
           </v-card>
           <div class="device-online" v-if="deviceOnline"></div>
           <div class="device-offline" v-if="!deviceOnline"></div>
-          <v-btn block @click="addDialog = true" v-if="!notDevice" color="info">
-            <span class="mdi mdi-plus"></span> 添加一个设备
-          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -60,18 +64,23 @@
       <v-card>
         <v-card-text>
           <br>
+          <v-alert dense type="error" style="font-size: 14px;padding: 5px;margin-bottom: 4px;" v-if="addError">
+            {{ addErrorText }}
+          </v-alert>
           <v-text-field density="compact" placeholder="请输入设备ID" prepend-inner-icon="mdi-monitor-cellphone-star"
-            variant="outlined" v-model="deviceId"></v-text-field>
-          <v-text-field v-model="devicePassword" :append-inner-icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
-            :type="passwordVisible ? 'text' : 'password'" density="compact" placeholder="请输入设备密码"
-            prepend-inner-icon="mdi-lock-outline" variant="outlined"
+            variant="outlined" v-model="deviceInfo.device_id"></v-text-field>
+          <v-text-field v-model="deviceInfo.device_password"
+            :append-inner-icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'" :type="passwordVisible ? 'text' : 'password'"
+            density="compact" placeholder="请输入设备密码" prepend-inner-icon="mdi-lock-outline" variant="outlined"
             @click:append-inner="passwordVisible = !passwordVisible"></v-text-field>
+          <v-switch label="自动连接" true-value="yes" false-value="no" v-model="deviceInfo.auto_online"
+            color="brown lighten-5"></v-switch>
           <v-card class="mb-12" color="surface-variant" variant="tonal">
             <v-card-text class="text-medium-emphasis text-caption">
               设备id和设备密钥可在 <a href="https://app.wequ.net" target="_blank">设备管理后台</a> 上查看，如果你不会使用，建议你先看看视频教程进行学习！
             </v-card-text>
           </v-card>
-          <v-btn color="info" block @click="addDevice" elevated>添加设备</v-btn>
+          <v-btn color="info" block @click="addDevice" elevated :loading="addLoading">添加设备</v-btn>
           <br>
         </v-card-text>
       </v-card>
@@ -83,31 +92,70 @@ import { getCurrentInstance } from 'vue'
 
 export default {
   data: () => ({
-    ctx: getCurrentInstance()?.appContext.config.globalProperties,
-    deviceInfo: { "device_id": null, "device_name": '加载中...', "device_password": null, "auto_online": 'no' },
+    apiGet: getCurrentInstance()?.appContext.config.globalProperties.$get,
+    deviceInfo: { "device_id": "", "device_name": '加载中...', "device_password": "", "auto_online": 'no' },
     showLog: false,
     addDialog: false,
     notDevice: true,
     passwordVisible: false,
     deviceId: '',
     devicePassword: '',
+    autoOnline: 'no',
+    addError: false,
+    addLoading: false,
+    addErrorText: '',
     deviceOnline: false
   }),
   methods: {
     addDevice() {
-      console.log(this.deviceId, this.devicePassword)
+      if (this.deviceInfo.device_id.length != 8 || this.deviceInfo.device_password.length < 6) {
+        this.addError = true
+        this.addErrorText = "请输入设备ID和设备密码"
+      }
+      this.addLoading = true
+      this.apiGet("/duck/device/client/" + this.deviceInfo.device_id + "/" + this.deviceInfo.device_password).then(res => {
+        if (res.data == null) {
+          this.addErrorText = "无法查询到该设备信息"
+          this.addError = true
+          this.addLoading = false
+        } else {
+          this.deviceInfo.device_name = res.data.deviceName
+          setTimeout(() => {
+            window.pywebview.api.add_device(this.deviceInfo).then((res) => {
+              if (res == "ok") {
+                this.addDialog = false
+                this.notDevice = false
+              } else {
+                this.addErrorText = "添加设备失败"
+                this.addError = true
+              }
+              this.addLoading = false
+            })
+          }, 200)
+        }
+      })
     },
     getDevice() {
       window.pywebview.api.get_device().then((res) => {
-        console.log(res)
+        if (res == null) {
+          this.notDevice = true
+        } else {
+          this.deviceInfo = res
+          this.notDevice = false
+        }
       })
     },
     connectService(res) {
-        setTimeout(() => {
-           window.pywebview.api.connect(res).then((res) => {
+      window.pywebview.api.connect(res).then((res) => {
         console.log(res)
       })
-    }, 200)
+    },
+    dissConnect() {
+      window.pywebview.api.diss_connect().then((res) => {
+        if (res == "ok") {
+          this.deviceOnline = false
+        }
+      })
     },
     connectSuccess() {
       window['connectSuccess'] = (resJson) => {
@@ -121,13 +169,12 @@ export default {
     }
   },
   mounted() {
+    let _this = this
+    window.addEventListener('pywebviewready', function() {
+      console.log("ddd")
+      _this.getDevice()
+    })
     this.connectSuccess()
-    setTimeout(() => {
-      window.pywebview.api.get_device().then((res) => {
-        this.deviceInfo = res
-        //this.connectService(res)
-      })
-    }, 800)
   },
   created() {
 
@@ -153,8 +200,8 @@ export default {
 }
 
 .device-online {
-  height: 500px;
-  margin-top: -33px;
+  height: 450px;
+  margin-top: -0;
   background-repeat: no-repeat;
   background-size: 400px;
   background-position: center;
@@ -162,8 +209,8 @@ export default {
 }
 
 .device-offline {
-  height: 500px;
-  margin-top: -33px;
+  height: 360px;
+  margin-top: 50px;
   background-repeat: no-repeat;
   background-size: 320px;
   background-position: center;

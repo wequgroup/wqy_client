@@ -16,6 +16,7 @@ from pynput import keyboard
 from pyapp.db.orm import ORM
 import _thread
 from api.mqtt import MQTT
+from api import g
 
 
 class API:
@@ -25,7 +26,6 @@ class API:
     orm = ORM()  # 操作数据库类
 
     def __init__(self):
-        super().__init__()
         self.win_show = True
         self.listen = False
         self.thread_mqtt = None
@@ -43,12 +43,24 @@ class API:
         """获取所有的设备"""
         return self.orm.get_device()
 
+    def add_device(self, data: dict):
+        """添加设备"""
+        print(data)
+        self.orm.add_device(data.get("device_name"), data.get("device_id"),
+                            data.get("device_password"), data.get("auto_online"))
+        return "ok"
+
     def connect(self, data):
-        """获取所有的设备"""
+        """连接服务端"""
         if self.start_mq is False:
             self.start_mq = True
-            mq = MQTT("49137218", "234234", "mqtt-hw.wequ.net", 1883, False, API.window)
-            mq.start()
+            self.thread_mqtt = MQTT("49137218", "234234", "mqtt-hw.wequ.net", 1883, False, API.window)
+            self.thread_mqtt.start()
+        return "ok"
+
+    def diss_connect(self):
+        g.STOP_MQ = True
+        self.start_mq = False
         return "ok"
 
     def start_listen_key(self):

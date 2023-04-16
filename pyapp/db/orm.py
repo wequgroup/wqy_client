@@ -54,9 +54,19 @@ class ORM:
             stmt = select(Device.device_id, Device.device_password, Device.device_name, Device.auto_online)
             result = db_session.execute(stmt)
             resp = result.one_or_none()
+            if resp is None:
+                return None
             data = {"device_id": resp[0], "device_password": resp[1], "device_name": resp[2], "auto_online": resp[3]}
         db_session.close()
         return data
+
+    def add_device(self, device_name, device_id, device_password, auto_inline):
+        db_session = DB.session()
+        with db_session.begin():
+            stmt = insert(Device).values(device_id=device_id, device_password=device_password,
+                                         auto_online=auto_inline,device_name=device_name)
+            db_session.execute(stmt)
+        db_session.close()
 
     def update_device(self, device_id, device_password):
         """更新储存变量"""

@@ -2,7 +2,7 @@ import os
 import sys
 
 import webview
-
+import json
 from api.api import API
 from pyapp.config.config import Config
 from pyapp.db.db import DB
@@ -11,6 +11,7 @@ api = API()  # 本地接口
 cfg = Config()  # 配置
 db = DB()  # 数据库类
 cfg.init()
+
 
 def on_minimized():
     pass
@@ -33,7 +34,6 @@ def on_closing():
 
 def on_resized(width, height):
     pass
-
 
 def app(ifCef=False):
     # 是否为开发环境

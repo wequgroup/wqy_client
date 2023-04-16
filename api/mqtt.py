@@ -1,6 +1,11 @@
+import sys
+
 import paho.mqtt.client as mqtt
 import time
 import json
+import _thread
+from threading import Event
+from api import g
 
 
 class MQTT:
@@ -18,6 +23,9 @@ class MQTT:
         self.username = user_name
         self.stop = False
         self.win = win
+        self.stop = False
+        self.event = Event()
+        _thread.start_new_thread(self.stop_mq, ())
 
     # 定义连接断开的回调函数
     def on_disconnect(self, rc, a, b):
@@ -34,6 +42,8 @@ class MQTT:
             print("鉴权失败，不重连")
             self.auto_online = False
             self.stop = True
+            data = {"online": "error"}
+            # self.win.evaluate_js(f"connectSuccess('{json.dumps(data)}')")
             self.client.loop_stop()
         if msg == 0:
             data = {"online": "success"}
@@ -44,7 +54,7 @@ class MQTT:
         msg = rc.payload  # 将信息转换成json格式
         try:
             params = json.loads(msg)
-            self.win.evaluate_js(f"connectSuccess('{msg}')")
+            # self.win.evaluate_js(f"connectSuccess('{msg}')")
         except:
             return False
         return True
@@ -52,11 +62,12 @@ class MQTT:
     def ping(self):
         """50秒发个心跳"""
         while True:
-            print("ping bang")
             if self.stop is True:
                 break
-            self.client.publish("0", "1")
-            time.sleep(20)
+            else:
+                print("ping bang")
+                self.client.publish("0", "1")
+                self.event.wait(50)
 
     def start(self):
         # 连接到MQTT服务器
@@ -67,9 +78,16 @@ class MQTT:
             self.client.loop_start()
             self.ping()
         else:
-            # print("连接失败")
+            print("连接失败")
             pass
 
-# m = MQTT("49137218", "2342341", "mqtt-hw.wequ.net", 1883, False)
-#
-# m.start()
+    def stop_mq(self):
+        while True:
+            if g.STOP_MQ:
+                self.stop = True
+                self.client.disconnect()
+                self.client.loop_stop()
+                self.event.set()
+                g.STOP_MQ = False
+                break
+            time.sleep(0.2)

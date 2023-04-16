@@ -9,7 +9,7 @@
         <v-dialog v-model="dialog" activator="parent" width="auto">
           <v-card>
             <v-card-text>
-             隐藏后按下<strong>Ctrl+Z+X</strong>唤起
+              隐藏后按下<strong>Ctrl+Z+X</strong>唤起
             </v-card-text>
             <v-card-actions>
               <div style="text-align: right;width: 100%;">
@@ -32,6 +32,10 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-overlay :model-value="gLoading" class="align-center justify-center" persistent>
+          <v-progress-circular color="#fff" indeterminate size="30"></v-progress-circular> <span
+            style="color: #fff;vertical-align: -2px;margin-left: 4px;">Loading...</span>
+        </v-overlay>
       </div>
       <router-view></router-view>
     </v-main>
@@ -43,8 +47,14 @@
 export default {
   data: () => ({
     dialog: false,
-    closeDialog: false
+    closeDialog: false,
+    gLoading: true
   }),
+  created(){
+    setTimeout(() => {
+        this.gLoading = false
+      }, 1300)
+  },
   methods: {
     showMini(e) {
       this.dialog = true
@@ -68,10 +78,10 @@ export default {
       window.pywebview.api.close().then((res) => {
       })
     },
-    closeClick(e){
+    closeClick(e) {
       this.closeDialog = true
       e.stopPropagation();
-    }
+    },
   }
 }
 
