@@ -168,9 +168,9 @@
   "resolved" "https://registry.npmmirror.com/delayed-stream/-/delayed-stream-1.0.0.tgz"
   "version" "1.0.0"
 
-"esbuild-windows-64@0.15.18":
-  "integrity" "sha512-qinug1iTTaIIrCorAUjR0fcBk24fjzEedFYhhispP8Oc7SFvs+XeW3YpAKiKp8dRpizl4YYAhxMjlftAMJiaUw=="
-  "resolved" "https://registry.npmmirror.com/esbuild-windows-64/-/esbuild-windows-64-0.15.18.tgz"
+"esbuild-darwin-arm64@0.15.18":
+  "integrity" "sha512-tKPSxcTJ5OmNb1btVikATJ8NftlyNlc8BVNtyT/UAr62JFOhwHlnoPrhYWz09akBLHI9nElFVfWSTSRsrZiDUA=="
+  "resolved" "https://registry.npmmirror.com/esbuild-darwin-arm64/-/esbuild-darwin-arm64-0.15.18.tgz"
   "version" "0.15.18"
 
 "esbuild@^0.15.9":
@@ -236,6 +236,11 @@
     "asynckit" "^0.4.0"
     "combined-stream" "^1.0.8"
     "mime-types" "^2.1.12"
+
+"fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmmirror.com/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
 
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
