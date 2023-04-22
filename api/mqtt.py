@@ -1,9 +1,12 @@
-import paho.mqtt.client as mqtt
-import time
-import json
 import _thread
+import json
+import time
 from threading import Event
+
+import paho.mqtt.client as mqtt
+
 from api import g
+from pyapp.script import Play
 
 
 class MQTT:
@@ -53,8 +56,10 @@ class MQTT:
         msg = rc.payload  # 将信息转换成json格式
         try:
             params = json.loads(msg)
-            self.write_log(params["shellContent"])
-        except:
+            shell_play = Play(params, self.win)
+            shell_play.run()
+        except Exception as e:
+            self.write_log("指令已下发但未执行：" + str(e))
             return False
         return True
 
@@ -92,6 +97,6 @@ class MQTT:
                 self.client.loop_stop()
                 self.event.set()
                 g.STOP_MQ = False
-                self.write_log("设备已下线.")
+                self.write_log("设备已下线！")
                 break
             time.sleep(0.2)

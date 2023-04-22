@@ -224,6 +224,11 @@
   "resolved" "https://registry.npmmirror.com/fs.realpath/-/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
 
+"fsevents@~2.3.2":
+  "integrity" "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA=="
+  "resolved" "https://registry.npmmirror.com/fsevents/-/fsevents-2.3.2.tgz"
+  "version" "2.3.2"
+
 "function-bind@^1.1.1":
   "integrity" "sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A=="
   "resolved" "https://registry.npmmirror.com/function-bind/-/function-bind-1.1.1.tgz"
@@ -785,7 +790,7 @@
 
 "shx@^0.3.4":
   "integrity" "sha512-N6A9MLVqjxZYcVn8hLmtneQWIJtp8IKzMP4eMnx+nqkvXoqinUPCbUFLp2UcWTEIUONhlk0ewxr/jaVGlc+J+g=="
-  "resolved" "https://registry.npmjs.org/shx/-/shx-0.3.4.tgz"
+  "resolved" "https://registry.npmmirror.com/shx/-/shx-0.3.4.tgz"
   "version" "0.3.4"
   dependencies:
     "minimist" "^1.2.3"
