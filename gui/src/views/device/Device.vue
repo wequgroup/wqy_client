@@ -158,7 +158,9 @@ export default {
       })
     },
     connectService(res) {
-      window.pywebview.api.connect(res).then((res) => {
+      console.log(this.deviceInfo.device_id)
+      console.log(this.deviceInfo.device_password)
+      window.pywebview.api.connect(this.deviceInfo.device_id,this.deviceInfo.device_password).then((res) => {
         console.log(res)
       })
     },

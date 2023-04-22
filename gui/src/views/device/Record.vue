@@ -130,7 +130,10 @@ export default {
     }
   },
   mounted() {
-    this.getRecord()
+    let _this = this
+    window.addEventListener('pywebviewready', function () {
+      _this.getRecord()
+    })
     this.setRecordOk()
   }
 }

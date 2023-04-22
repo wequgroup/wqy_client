@@ -13,8 +13,8 @@
         </v-list>
       </v-navigation-drawer>
       <v-main style="height: 561px;margin-top: 20px;">
-        <Device v-if="pageDict.showDevice" />
-        <Record v-if="pageDict.showRecord" />
+        <Device v-show="pageDict.showDevice" />
+        <Record v-show="pageDict.showRecord" />
       </v-main>
     </v-layout>
   </v-card>

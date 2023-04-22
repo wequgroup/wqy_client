@@ -47,6 +47,7 @@ class API:
 
     def add_device(self, data: dict):
         """添加设备或者更新设备"""
+        self.start_mq = False
         if data.get("action") == "add":
             self.orm.add_device(data.get("device_name"), data.get("device_id"),
                                 data.get("device_password"), data.get("auto_online"))
@@ -57,11 +58,11 @@ class API:
                                    data.get("device_password"), data.get("auto_online"))
         return "ok"
 
-    def connect(self, data):
+    def connect(self, device_id, device_password):
         """连接服务端"""
         if self.start_mq is False:
             self.start_mq = True
-            self.thread_mqtt = MQTT("49137218", "234234", "mqtt-hw.wequ.net", 1883, False, API.window)
+            self.thread_mqtt = MQTT(device_id, device_password, "mqtt-hw.wequ.net", 1883, False, API.window)
             self.thread_mqtt.start()
         return "ok"
 

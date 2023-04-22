@@ -50,10 +50,10 @@ class ORM:
     def update_device(self, device_name, device_id, device_password, auto_inline):
         db_session = DB.session()
         with db_session.begin():
-            stmt = update(Device).where(Device.device_id == device_id).values(device_id=device_id,
-                                                                              device_password=device_password,
-                                                                              auto_online=auto_inline,
-                                                                              device_name=device_name)
+            stmt = update(Device).values(device_id=device_id,
+                                         device_password=device_password,
+                                         auto_online=auto_inline,
+                                         device_name=device_name)
             db_session.execute(stmt)
         db_session.close()
 
