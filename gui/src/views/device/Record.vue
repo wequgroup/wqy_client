@@ -102,6 +102,7 @@ export default {
   methods: {
     setRecordOk() {
       window['setRecordOk'] = (resJson) => {
+        console.log("ddd")
         this.tipsText = "很好，你的脚本已经录制完成！"
       }
     },
@@ -109,6 +110,7 @@ export default {
       window.pywebview.api.set_record(this.recordName).then((res) => {
         this.setRecordNameDialog = false
         this.getRecord()
+        this.tipsText = "很好，你的脚本已经录制完成！"
         this.snackbar = true
       })
     },

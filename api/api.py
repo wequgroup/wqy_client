@@ -76,12 +76,11 @@ class API:
         return self.orm.get_record()
 
     def set_record(self, name):
-        self.hide()
         action = ActionRecord(self.orm, str(random.randint(100000, 999999)), name)
+        self.window.minimize()
         action.run()
         self.window.show()
         self.window.restore()
-        self.win_show = True
         return "ok"
 
     def run_record(self, id):
@@ -89,7 +88,7 @@ class API:
         self.hide()
         action = ActionPlay(content)
         action.run()
-        self.window.show()
+        self.window.minimize()
         self.window.restore()
         self.win_show = True
         return "ok"

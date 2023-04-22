@@ -12,7 +12,6 @@ class ActionRecord:
         self.record = []
 
     def run(self):
-        print("ok,please")
         self.thread_mouse.start()
         self.thread_keyboard.start()
         self.thread_mouse.join()
@@ -28,7 +27,6 @@ class ActionRecord:
         :param key:
         :return:
         """
-        print("按下了" + str(key))
         if key != keyboard.Key.esc:
             try:
                 self.record.append({"key": key.char, "action": "pressed_key", "_time": time.time()})
