@@ -24,7 +24,7 @@ class Config:
     # 程序基础配置信息
     ##
     appVersion = "0.0.1"  # 应用版本号
-    appName = '微趣鸭' + "  v" + appVersion  # 应用名称
+    appName = '微趣鸭'  # 应用名称
     appPackage = 'com.wequ.duck'    # 应用包名，用于在本地电脑生成 vip.pangao.vue-pywebview-pyinstaller 唯一文件夹
 
     ##
@@ -61,7 +61,7 @@ class Config:
         else:
             # win系统
             storageDir = os.getenv('APPDATA')
-        storageDir = os.path.join(storageDir, Config.appPackage+'.'+Config.appName)
+        storageDir = os.path.join(storageDir, Config.appPackage)
         if not os.path.isdir(storageDir):
             os.mkdir(storageDir)
         Config.storageDir = storageDir

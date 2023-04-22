@@ -3,13 +3,13 @@ CREATE TABLE alembic_version (
     CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
 );
 
--- Running upgrade  -> 3f87b73f28d4
+-- Running upgrade  -> c76b6ec9a333
 
 CREATE TABLE device (
     device_id VARCHAR NOT NULL, 
     device_password VARCHAR DEFAULT '' NOT NULL, 
-    device_name VARCHAR DEFAULT '' NOT NULL,
-    auto_online VARCHAR DEFAULT 'off' NOT NULL,
+    device_name VARCHAR DEFAULT '' NOT NULL, 
+    auto_online VARCHAR DEFAULT '' NOT NULL, 
     PRIMARY KEY (device_id)
 );
 
@@ -32,5 +32,5 @@ CREATE TABLE storage_var (
 
 CREATE INDEX ix_storage_var_key ON storage_var ("key");
 
-INSERT INTO alembic_version (version_num) VALUES ('3f87b73f28d4') RETURNING version_num;
+INSERT INTO alembic_version (version_num) VALUES ('c76b6ec9a333') RETURNING version_num;
 

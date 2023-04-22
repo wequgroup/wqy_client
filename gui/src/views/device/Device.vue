@@ -80,9 +80,33 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="updateDialog" width="500" persistent>
+      <v-card>
+        <v-card-title class="text-h5 grey lighten-2">
+          有新版本
+        </v-card-title>
+        <v-card-text>
+          <h4>{{ updateName }}</h4>
+          <v-html>
+            {{ updateContent }}
+          </v-html>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text @click="updateDialog = false" v-if="!mustUpdate">
+            不升级
+          </v-btn>
+          <v-btn color="info" text @click="updateApp">
+            立刻升级
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
+const v = 1
 import { getCurrentInstance } from 'vue'
 
 export default {
@@ -101,7 +125,12 @@ export default {
     addErrorText: '',
     deviceOnline: false,
     update: false,
-    logList: []
+    logList: [],
+    updateDialog: false,
+    updateName: '升级提示',
+    updateContent: '',
+    updateUrl: '',
+    mustUpdate: false
   }),
   methods: {
     addDialogClick(action) {
@@ -109,6 +138,22 @@ export default {
         this.update = true
       }
       this.addDialog = true
+    },
+    updateApp(){
+      window.open(this.updateUrl)
+    },
+    getAppUpdate() {
+      this.apiGet("/duck/post/2").then(res => {
+         let data = res.data
+         this.updateName = data.name
+         let value  = JSON.parse(data.value)
+         if(value[0]['num'] > v){
+          this.updateDialog = true
+         }
+         this.updateContent = value[0]['content']
+         this.updateUrl = value[0]['download']
+         this.mustUpdate = value[0]['update']
+      })
     },
     addDevice() {
       if (this.deviceInfo.device_id.length != 8 || this.deviceInfo.device_password.length < 6) {
@@ -160,7 +205,7 @@ export default {
     connectService(res) {
       console.log(this.deviceInfo.device_id)
       console.log(this.deviceInfo.device_password)
-      window.pywebview.api.connect(this.deviceInfo.device_id,this.deviceInfo.device_password).then((res) => {
+      window.pywebview.api.connect(this.deviceInfo.device_id, this.deviceInfo.device_password).then((res) => {
         console.log(res)
       })
     },
@@ -189,6 +234,7 @@ export default {
     }
   },
   mounted() {
+    this.getAppUpdate()
     let _this = this
     window.addEventListener('pywebviewready', function () {
       _this.getDevice()

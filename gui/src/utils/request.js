@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://api.wequ.net/app'
-
+//axios.defaults.baseURL = 'http://localhost:8080/app'
 axios.interceptors.request.use( //响应拦截
         async config => {
             // config.headers.Authorization = 'Bearer ' + localStorage.getItem("token")

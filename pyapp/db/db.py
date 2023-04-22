@@ -15,7 +15,7 @@ from shutil import copyfile
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from config.config import Config
+from pyapp.config.config import Config
 
 
 class DB:
@@ -29,7 +29,6 @@ class DB:
         # 迁移数据库到本地电脑
         dbStorageDir = os.path.join(Config.storageDir, 'static', 'db')    # 本地电脑
         if not os.path.isdir(dbStorageDir):
-            # 新建本地电脑文件夹
             os.makedirs(dbStorageDir)
         DB.dbPath = os.path.join(dbStorageDir, 'base.db')
         if not os.path.exists(DB.dbPath) or Config.ifCoverDB:

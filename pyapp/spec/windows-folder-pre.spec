@@ -19,7 +19,7 @@ PyInstaller.config.CONF['workpath'] = cachePath
 icoPath = os.path.join('..', 'icon', 'logo.ico')
 
 # 项目名称
-appName = '微趣鸭  v0.0.1'
+appName = '微趣鸭'
 
 # 版本号
 version = '0.0.1'
