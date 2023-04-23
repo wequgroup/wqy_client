@@ -16,7 +16,7 @@ if not os.path.exists(cachePath):
 PyInstaller.config.CONF['workpath'] = cachePath
 
 # icon相对路径
-icoPath = os.path.join('..', 'icon', 'logo.icns')
+icoPath = os.path.join('..', 'icon', 'logo.ico')
 
 # 项目名称
 appName = 'WeDuck'

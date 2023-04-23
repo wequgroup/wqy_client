@@ -40,7 +40,6 @@ class ActionPlay:
 
                 if action == "pressed_key" or action == "released_key":
                     key = obj['key'] if 'Key.' not in obj['key'] else special_keys[obj['key']]
-                    print("action: {0}, time: {1}, key: {2}".format(action, _time, str(key)))
                     if action == "pressed_key":
                         self.keyboard.press(key)
                     else:
@@ -54,7 +53,6 @@ class ActionPlay:
                             self.script_data[index - 1]['action'] == "released"):
                         if x == self.script_data[index - 1]['x'] and y == self.script_data[index - 1]['y']:
                             move_for_scroll = False
-                    print("x: {0}, y: {1}, action: {2}, time: {3}".format(x, y, action, _time))
                     self.mouse.position = (x, y)
                     if action == "pressed" or action == "released" or action == "scroll" and move_for_scroll is True:
                         time.sleep(0.1)

@@ -11,7 +11,6 @@ usage: 调用window.pywebview.api.<methodname>(<parameters>)从Javascript执行
 
 import os
 import random
-import sys
 
 from PIL import Image
 from pystray import Icon as icon, Menu as menu, MenuItem as item
@@ -21,8 +20,7 @@ from api.mqtt import MQTT
 from pyapp.db.orm import ORM
 from pyapp.script.action_play import ActionPlay
 from pyapp.script.action_record import ActionRecord
-
-
+file_path = os.path.abspath(os.path.dirname(__file__))
 class API:
     """本地API，供前端JS调用"""
 
@@ -42,7 +40,7 @@ class API:
         self.window.restore()
 
     def app_tray(self):
-        icoPath = os.path.join('.', 'static', 'logo.png')
+        icoPath = os.path.join(file_path.replace("api",""), 'static', 'logo.png')
         image = Image.open(icoPath)
         tray = icon('微趣鸭', image, menu=menu(
             item(
@@ -121,4 +119,5 @@ class API:
         """退出"""
         g.STOP_MQ = True
         self.window.destroy()
+        self.tray.stop()
         return "ok"

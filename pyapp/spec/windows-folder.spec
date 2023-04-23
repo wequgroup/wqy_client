@@ -25,7 +25,7 @@ appName = 'WeDuck'
 version = '0.0.1'
 
 # 对Python字节码加密
-block_cipher = pyi_crypto.PyiBlockCipher(key='cck887356789123456')
+block_cipher = pyi_crypto.PyiBlockCipher(key='weduck889378294')
 
 
 a = Analysis(['../../main.py'],
