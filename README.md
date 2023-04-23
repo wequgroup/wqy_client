@@ -1,52 +1,7 @@
-### 前言
-
-现如今，要说比较火的编程语言当属 JavaScript 和 Python 了，这两门语言都可以独立编写前端页面、后端服务器、手机 APP、电脑客户端等等，无所不能。不过，不同的编程语言有不同的侧重点。比如 JavaScript 写网页得心应手，Python 处理大数据信手拈来。那么，能不能取两者的优点，构建一个跨平台客户端框架呢？这就有了今天的主角：[vue-pywebview-pyinstaller](https://github.com/pangao1990/vue-pywebview-pyinstaller)。
-
-### 应用简介
-
-[vue-pywebview-pyinstaller](https://github.com/pangao1990/vue-pywebview-pyinstaller) 基于 pywebview 和 PyInstaller 框架，构建 macOS 和 windows 平台的客户端。本应用的视图层支持 Vue、React、Angular、HTML 中的任意一种，业务层采用本地 Python。考虑到某些生物计算场景数据量大，数据私密，因此将数据上传到服务器计算，并不一定是最优解，选择采用本地 Python 也是一种不错的选择。不过，如果需要调用远程 API，本应用也是支持的。
-
-##### 应用优势
-
-- 视图层可使用任意一款你喜欢的前端框架，比如 Vue、React、Angular、HTML 等，迁移无压力
-- 采用 Python 编程语言开发业务层，模块丰富
-- 本应用已经封装打包环节，一键生成 macOS 和 windows 平台的客户端应用。开发者只需要关注视图效果和业务逻辑本身，将繁重复杂的打包环节交给本应用处理即可
-
-##### 适用场景
-
-- 对软件的用户界面有一定美感要求
-- 需要用到 Python 中的人工智能、生信分析等模块
-- 考虑搭建本地应用，使用本机计算和存储资源
-
-##### 适用人群
-
-熟悉 Python3 和 任意一款前端框架，如 Vue、React、Angular、HTML 编程的程序员。
-
-### 应用安装
-
 #### 运行环境
 
-- npm8.0+ ([NodeJs 安装教程](https://blog.pangao.vip/NodeJs安装教程/))
-- Python3.6-3.8 ([Python 安装教程](https://blog.pangao.vip/Python环境搭建及模块安装))
-
-#### 应用下载
-
-利用 git（[git 安装教程](https://blog.pangao.vip/Git安装教程/)） 下载应用，如下所示：
-
-```
-git clone https://github.com/pangao1990/vue-pywebview-pyinstaller.git
-```
-
-或者，直接在我的 [github](https://github.com/pangao1990/vue-pywebview-pyinstaller) 下载。
-
-```
-# 进入项目
-cd vue-pywebview-pyinstaller
-```
-
-进入项目，项目清单如下所示：
-
-![image](https://blog.pangao.vip/pic/JavaScript和Python打造跨平台客户端应用——vue-pywebview-pyinstaller-1.png)
+- npm8.0+ 
+- Python3.6-3.8 
 
 #### 初始化
 
@@ -58,10 +13,6 @@ npm run init
 ```
 
 没报错信息，则初始化完成，如下所示：
-
-![image](https://blog.pangao.vip/pic/JavaScript和Python打造跨平台客户端应用——vue-pywebview-pyinstaller-2.png)
-
-![image](https://blog.pangao.vip/pic/JavaScript和Python打造跨平台客户端应用——vue-pywebview-pyinstaller-3.png)
 
 项目里多了一个 node_modules 文件夹，用于存放 npm 下载的包；多了一个 pyenv 文件夹，用于存放 Python 虚拟环境。
 
@@ -182,7 +133,6 @@ window.evaluate_js(code, callback=None)允许您使用同步返回的最后一�
 
 pywebview 建议 macOS 用 [py2app](https://py2app.readthedocs.io/en/latest/) 打包，windows 用 [pyinstaller](https://pyinstaller.readthedocs.io/en/stable/) 打包。但是我发现 pyinstaller 也可以很顺畅得打包 macOS 应用，虽然移植有点问题。
 
-我就不介绍 pyinstaller 的打包方法了，后面我会出这个框架详细的打包介绍。这里我将打包方法封装在应用中，只需要按命令打包即可。
 
 ```
 # 开发模式
@@ -217,68 +167,7 @@ npm run build:folder
 npm run build:folder:cef
 ```
 
-#### 数据库迁移
-
-在 pyapp/db/models.py 中修改数据库格式后，执行以下命令迁移数据库。
-
-注意：迁移数据库前，需要对 sqlalchemy 数据库对象映射框架有所了解。
-
-```
-# 迁移数据库
-m=备注迁移信息 npm run alembic
-```
-
-### HMR 原理
-
-- 使用 npm-run-all 并行启用 vite(自带热更新) 和 pywebview
-- 使用 nodemon 监听 `api/*` `pyapp/*` `main.py` 等文件，有修改自动重启应用，达到 HRM 效果
-
-\*注：这里感谢 [WnagoiYy](https://github.com/WnagoiYy) 同学的 PR。
-
 ### 注意问题
 
 - 在 windows 系统下，只能打包 exe 等适用于 windows 的程序，不能打包 mac 系统下的 app 程序。同理，mac 也是一样。
 - 在 windows 系统下，请不要使用中文路径，否则可能会出现 cannot call null pointer pointer from cdata 'int(_)(void _, int)' 等错误信息。mac 系统无此问题。
-
-#### 历史版本
-
-##### V3.1.1
-
-- 解决数据库操作时，session 冲突的问题
-- 修复了一些已知问题
-
-##### V3.1.0
-
-- 优化数据迁移
-
-##### V3.0.0
-
-- 新增 SQLite 数据库支持，使用 sqlalchemy 进行 ORM 操作，使用 alembic 进行数据迁移与映射
-- 新增 static 静态文件夹，可以存放 cache 缓存、db 数据库等，这些文件都将被直接打包到程序包中
-- 新增 python 调用 js 函数的示例
-- 在 config.py 中新增配置信息，如代码所在绝对目录等
-- 修复 python 代码无法打印日志的问题
-- 构建程序包时，实时更新打包配置文件 spec
-- 调整项目文件夹结构
-- pywebview 模块升级到 4.0
-
-##### V2.0.0
-
-- 将 Vue3 框架整体分离至 gui 文件夹，如此一来，你可以随意替换 gui 文件夹下的前端框架，使用 Vue、React、Angular、HTML ，或者你喜欢的其他框架均可
-- 整理框架结构，优化代码逻辑
-
-##### V1.3.0
-
-- 新增热更新
-
-##### V1.0.0
-
-- 初始版本
-
----
-
-更多编程教学请关注公众号：**Mon陪你学编程**
-
-![image](https://blog.pangao.vip/pic/Mon陪你学编程.jpg)
-
----

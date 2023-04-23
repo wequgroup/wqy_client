@@ -9,16 +9,18 @@ Description: 本地API，供前端JS调用
 usage: 调用window.pywebview.api.<methodname>(<parameters>)从Javascript执行
 '''
 
+import os
 import random
-import getpass
-import json
-from pyapp.script.action_record import ActionRecord
-from pyapp.script.action_play import ActionPlay
-from pynput import keyboard
-from pyapp.db.orm import ORM
-import _thread
-from api.mqtt import MQTT
+import sys
+
+from PIL import Image
+from pystray import Icon as icon, Menu as menu, MenuItem as item
+
 from api import g
+from api.mqtt import MQTT
+from pyapp.db.orm import ORM
+from pyapp.script.action_play import ActionPlay
+from pyapp.script.action_record import ActionRecord
 
 
 class API:
@@ -32,14 +34,25 @@ class API:
         self.listen = False
         self.thread_mqtt = None
         self.start_mq = False
-        self.start_listen_key()
+        self.tray = self.app_tray()
+        self.tray.run_detached()
 
-    def listen_key(self):
-        """
-        监听热键
-        """
-        with keyboard.Listener(on_press=self.key_press) as listener:
-            listener.join()
+    def show_app(self, *args, **kwargs):
+        self.window.show()
+        self.window.restore()
+
+    def app_tray(self):
+        icoPath = os.path.join('.', 'static', 'logo.png')
+        image = Image.open(icoPath)
+        tray = icon('微趣鸭', image, menu=menu(
+            item(
+                '显示主界面',
+                self.show_app),
+            item(
+                '退出程序',
+                self.close)
+        ))
+        return tray
 
     def get_device(self):
         """获取所有的设备"""
@@ -52,8 +65,6 @@ class API:
             self.orm.add_device(data.get("device_name"), data.get("device_id"),
                                 data.get("device_password"), data.get("auto_online"))
         else:
-            print(data.get("device_name"), data.get("device_id"),
-                  data.get("device_password"), data.get("auto_online"))
             self.orm.update_device(data.get("device_name"), data.get("device_id"),
                                    data.get("device_password"), data.get("auto_online"))
         return "ok"
@@ -90,32 +101,15 @@ class API:
         action.run()
         self.window.minimize()
         self.window.restore()
-        self.win_show = True
         return "ok"
 
     def delete_record(self, id):
         self.orm.delete_record(id)
         return "ok"
 
-    def start_listen_key(self):
-        if self.listen is False:
-            self.listen = True
-            _thread.start_new_thread(self.listen_key, ())
-
-    def key_press(self, key):  # 定义按键按下时触发的函数
-        if str(key) == r"'\x18'":
-            if self.win_show is False:
-                self.window.show()
-                self.window.restore()
-                self.win_show = True
-            else:
-                self.window.hide()
-                self.win_show = False
-
     def hide(self):
         """隐藏"""
         self.window.hide()
-        self.win_show = False
         return "ok"
 
     def minisize(self):
@@ -125,40 +119,6 @@ class API:
 
     def close(self):
         """退出"""
+        g.STOP_MQ = True
         self.window.destroy()
         return "ok"
-
-    def get_owner(self):
-        # 调用js挂载的函数，返回结果可在控制台查看
-        self.py2js({'tip': '来自py的调用'})
-
-        # 获取数据库的值
-        author = self.orm.getStorageVar('author')
-        print('author', author)  # python打印结果可在终端查看
-        return getpass.getuser()
-
-    def py2js(self, info):
-        """调用js中挂载到window的函数"""
-        API.window.evaluate_js(f"py2js('{json.dumps(info)}')")
-
-    # def pyCreateFileDialog(self, fileTypes=['全部文件 (*.*)'], directory=''):
-    #     '''打开文件对话框'''
-    #     # 可选文件类型
-    #     # fileTypes = ['Excel表格 (*.xlsx;*.xls)']
-    #     fileTypes = tuple(fileTypes)  # 要求必须是元组
-    #     result = API.window.create_file_dialog(dialog_type=webview.OPEN_DIALOG, directory=directory,
-    #                                            allow_multiple=True, file_types=fileTypes)
-    #     resList = list()
-    #     if result is not None:
-    #         for res in result:
-    #             filePathList = os.path.split(res)
-    #             dir = filePathList[0]
-    #             filename = filePathList[1]
-    #             ext = os.path.splitext(res)[-1]
-    #             resList.append({
-    #                 'filename': filename,
-    #                 'ext': ext,
-    #                 'dir': dir,
-    #                 'path': res
-    #             })
-    #     return resList

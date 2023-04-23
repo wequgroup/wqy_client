@@ -40,8 +40,8 @@ class Config:
     # 其他配置信息
     ##
     devEnv = True    # 是否为开发环境，不需要手动更改，在程序运行的时候自动判断
-    devPort = '3000'    # 开发环境中的前端页面端口
-    cryptoKey = 'cck887356789123456'    # 对Python字节码加密
+    devPort = '7159'    # 开发环境中的前端页面端口
+    cryptoKey = 'weduck889378294'    # 对Python字节码加密
     ifCoverDB = False    # 是否覆盖电脑上存储的数据库，默认不覆盖。只有在数据库改动非常大，不得已的情况下才建议覆盖数据库
 
     ##

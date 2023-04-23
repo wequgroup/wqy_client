@@ -9,12 +9,12 @@
         <v-dialog v-model="dialog" activator="parent" width="auto">
           <v-card>
             <v-card-text>
-              隐藏后按下<strong>Ctrl+Z+X</strong>唤起
+              隐藏后可以在托盘图标里找到
             </v-card-text>
             <v-card-actions>
               <div style="text-align: right;width: 100%;">
                 <v-btn color="info" @click="minisize">最小化</v-btn>
-                <v-btn color="teal-darken-4" @click="hide">隐藏</v-btn>
+                <v-btn color="teal-darken-4" @click="hide">隐藏到托盘</v-btn>
               </div>
             </v-card-actions>
           </v-card>
@@ -22,12 +22,11 @@
         <v-dialog v-model="closeDialog" activator="parent" width="auto">
           <v-card>
             <v-card-text>
-              你是确定要退出吗？ 隐藏后按下<strong>Ctrl+Z+X</strong>唤起
+              这不会退出，而是会隐藏到托盘
             </v-card-text>
             <v-card-actions>
               <div style="text-align: right;width: 100%;">
-                <v-btn color="pink" @click="close">退出</v-btn>
-                <v-btn color="success" @click="hide">我只想隐藏</v-btn>
+                <v-btn color="success" @click="hide">我知道了</v-btn>
               </div>
             </v-card-actions>
           </v-card>
@@ -61,6 +60,8 @@ export default {
       e.stopPropagation();
     },
     hide() {
+      this.closeDialog = false
+      this.dialog = false
       setTimeout(function () {
         window.pywebview.api.hide().then((res) => {
         })

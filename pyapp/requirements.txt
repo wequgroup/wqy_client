@@ -5,3 +5,5 @@ sqlalchemy==2.0.5
 alembic==1.10.2
 pynput==1.7.6
 paho-mqtt==1.6.1
+pystray==0.19.4
+pillow==9.0.1

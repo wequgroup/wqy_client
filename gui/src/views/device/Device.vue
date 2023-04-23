@@ -22,7 +22,7 @@
             <template v-slot:title>
               <div style="font-size: 15px;font-weight: 600;display: inline;">{{ this.deviceInfo.device_name }}</div>
               <div class="auto-online"><v-switch label="自动连接" true-value="yes" false-value="no"
-                  v-model="deviceInfo.auto_online" color="brown lighten-5"></v-switch></div>
+                  v-model="deviceInfo.auto_online" color="brown lighten-5" @change="updateOnline"></v-switch></div>
             </template>
             <v-card-text>
               <div style="padding-left: 13px;">
@@ -155,6 +155,10 @@ export default {
          this.mustUpdate = value[0]['update']
       })
     },
+    updateOnline(){
+      this.update = true
+      this.addDevice()
+    },
     addDevice() {
       if (this.deviceInfo.device_id.length != 8 || this.deviceInfo.device_password.length < 6) {
         this.addError = true
@@ -174,6 +178,7 @@ export default {
             } else {
               this.deviceInfo.action = "add"
             }
+            console.log(this.deviceInfo)
             window.pywebview.api.add_device(this.deviceInfo).then((res) => {
               this.update == false
               if (res == "ok") {
@@ -203,8 +208,6 @@ export default {
       })
     },
     connectService(res) {
-      console.log(this.deviceInfo.device_id)
-      console.log(this.deviceInfo.device_password)
       window.pywebview.api.connect(this.deviceInfo.device_id, this.deviceInfo.device_password).then((res) => {
         console.log(res)
       })

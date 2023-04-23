@@ -2,10 +2,11 @@ import os
 import sys
 
 import webview
-import json
+
 from api.api import API
 from pyapp.config.config import Config
 from pyapp.db.db import DB
+
 
 api = API()  # 本地接口
 cfg = Config()  # 配置
@@ -35,10 +36,10 @@ def on_closing():
 def on_resized(width, height):
     pass
 
+
 def app(ifCef=False):
     # 是否为开发环境
     Config.devEnv = sys.flags.dev_mode
-
     # 前端页面目录
     if Config.devEnv:
         # 开发环境
@@ -52,7 +53,6 @@ def app(ifCef=False):
     # 创建窗口
     window = webview.create_window(title=Config.appName, url=template, js_api=api, width=590, height=600,
                                    min_size=(600, 500), resizable=False, frameless=True, easy_drag=True)
-
     # 获取窗口实例
     API.window = window
     # 绑定事件
