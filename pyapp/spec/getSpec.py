@@ -173,7 +173,7 @@ coll = COLLECT(exe,
 
 # 生成 spec 配置文件
 specDir = os.path.dirname(__file__)
-
+print(specDir)
 
 if ifMac:
     console = False    # 是否展示终端

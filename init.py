@@ -39,7 +39,7 @@ def on_resized(width, height):
 
 def app(ifCef=False):
     # 是否为开发环境
-    Config.devEnv = sys.flags.dev_mode
+    Config.devEnv = False
     # 前端页面目录
     if Config.devEnv:
         # 开发环境
@@ -65,4 +65,4 @@ def app(ifCef=False):
     # CEF模式
     guiCEF = 'cef' if ifCef else None
     # 启动窗口
-    webview.start(debug=Config.devEnv, http_server=True, gui=guiCEF)
+    webview.start(debug=Config.devEnv, http_server=Config.devEnv, gui=guiCEF)

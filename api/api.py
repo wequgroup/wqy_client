@@ -11,7 +11,7 @@ usage: 调用window.pywebview.api.<methodname>(<parameters>)从Javascript执行
 
 import os
 import random
-
+import time
 from PIL import Image
 from pystray import Icon as icon, Menu as menu, MenuItem as item
 
@@ -117,7 +117,10 @@ class API:
 
     def close(self):
         """退出"""
-        g.STOP_MQ = True
-        self.window.destroy()
+        time.sleep(0.1)
         self.tray.stop()
+        time.sleep(0.1)
+        g.STOP_MQ = True
+        time.sleep(0.1)
+        self.window.destroy()
         return "ok"
