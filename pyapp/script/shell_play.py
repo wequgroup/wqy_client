@@ -1,4 +1,4 @@
-import os
+import subprocess
 
 
 class ShellPlay:
@@ -6,8 +6,4 @@ class ShellPlay:
         self.content = content
 
     def run(self):
-        res = os.system(self.content)
-        if res == 0:
-            print("error")
-        else:
-            print("success")
+        subprocess.run(self.content, shell=True)
