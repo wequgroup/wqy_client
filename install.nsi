@@ -132,5 +132,5 @@ Function un.onUninstSuccess
 FunctionEnd
 
 Function AutoBoot
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "WeDuck.exe" "$INSTDIR\WeDuck.exe --mini yes"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "WeDuck" "$INSTDIR\WeDuck.exe --mini yes"
 FunctionEnd
