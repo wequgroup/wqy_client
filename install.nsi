@@ -2,7 +2,7 @@
 
 ; 安装程序初始定义常量
 !define PRODUCT_NAME "WeDuck"
-!define PRODUCT_VERSION "1.0"
+!define PRODUCT_VERSION "2.0"
 !define PRODUCT_PUBLISHER "微趣奈特"
 !define PRODUCT_WEB_SITE "https://wequ.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\WeDuck.exe"
@@ -87,6 +87,10 @@ Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\WeDuck.exe"
+  
+  Delete "$INSTDIR\*.pyd"
+  Delete "$INSTDIR\*.dll"
+  Delete "$INSTDIR\*.zip"
 
   Delete "$SMPROGRAMS\WeDuck\Uninstall.lnk"
   Delete "$SMPROGRAMS\WeDuck\Website.lnk"
@@ -97,6 +101,7 @@ Section Uninstall
 
   RMDir /r "$INSTDIR\WeDuck.exe.WebView2"
   RMDir /r "$INSTDIR\webview"
+  RMDir /r "$INSTDIR\psutil"
   RMDir /r "$INSTDIR\web"
   RMDir /r "$INSTDIR\static"
   RMDir /r "$INSTDIR\pythonnet"
@@ -104,6 +109,7 @@ Section Uninstall
   RMDir /r "$INSTDIR\markupsafe"
   RMDir /r "$INSTDIR\importlib_metadata-6.6.0.dist-info"
   RMDir /r "$INSTDIR\greenlet"
+  RMDir /r "$INSTDIR\clr_loader"
   RMDir /r "$INSTDIR\clr_loader"
 
   RMDir "$INSTDIR"
@@ -126,5 +132,5 @@ Function un.onUninstSuccess
 FunctionEnd
 
 Function AutoBoot
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "WeDuck.exe" "$INSTDIR\WeDuck.exe"
+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "WeDuck.exe" "$INSTDIR\WeDuck.exe --mini yes"
 FunctionEnd

@@ -785,7 +785,7 @@
 
 "shx@^0.3.4":
   "integrity" "sha512-N6A9MLVqjxZYcVn8hLmtneQWIJtp8IKzMP4eMnx+nqkvXoqinUPCbUFLp2UcWTEIUONhlk0ewxr/jaVGlc+J+g=="
-  "resolved" "https://registry.npmjs.org/shx/-/shx-0.3.4.tgz"
+  "resolved" "https://registry.npmmirror.com/shx/-/shx-0.3.4.tgz"
   "version" "0.3.4"
   dependencies:
     "minimist" "^1.2.3"

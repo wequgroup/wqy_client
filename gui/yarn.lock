@@ -170,7 +170,7 @@
 
 "esbuild-windows-64@0.15.18":
   "integrity" "sha512-qinug1iTTaIIrCorAUjR0fcBk24fjzEedFYhhispP8Oc7SFvs+XeW3YpAKiKp8dRpizl4YYAhxMjlftAMJiaUw=="
-  "resolved" "https://registry.npmjs.org/esbuild-windows-64/-/esbuild-windows-64-0.15.18.tgz"
+  "resolved" "https://registry.npmmirror.com/esbuild-windows-64/-/esbuild-windows-64-0.15.18.tgz"
   "version" "0.15.18"
 
 "esbuild@^0.15.9":

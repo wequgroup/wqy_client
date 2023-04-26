@@ -106,7 +106,7 @@
   </div>
 </template>
 <script>
-const v = 1
+const v = 2
 import { getCurrentInstance } from 'vue'
 
 export default {
@@ -223,7 +223,7 @@ export default {
       window['connectSuccess'] = (resJson) => {
         const res = JSON.parse(resJson)
         if (res.online === 'success') {
-          console.log("上线成功")
+          this.showLog = true
           this.deviceOnline = true
         }
       }
@@ -269,17 +269,17 @@ export default {
 }
 
 .device-online {
-  height: 450px;
-  margin-top: -0;
+  height: 360px;
+  margin-top: 40px;
   background-repeat: no-repeat;
-  background-size: 400px;
+  background-size: 322px;
   background-position: center;
-  background-image: url(@/assets/device_online.gif);
+  background-image: url(@/assets/device_online.png);
 }
 
 .device-offline {
   height: 360px;
-  margin-top: 50px;
+  margin-top: 40px;
   background-repeat: no-repeat;
   background-size: 320px;
   background-position: center;

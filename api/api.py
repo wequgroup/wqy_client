@@ -21,6 +21,7 @@ from pyapp.db.orm import ORM
 from pyapp.script.action_play import ActionPlay
 from pyapp.script.action_record import ActionRecord
 file_path = os.path.abspath(os.path.dirname(__file__))
+
 class API:
     """本地API，供前端JS调用"""
 
@@ -35,7 +36,7 @@ class API:
         self.tray = self.app_tray()
         self.tray.run_detached()
 
-    def show_app(self, *args, **kwargs):
+    def show_app(self):
         self.window.show()
         self.window.restore()
 
