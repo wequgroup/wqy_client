@@ -4,7 +4,13 @@
       <v-btn size="small" text v-if="!showLog && !notDevice" @click="showLog = true">
         <span class="mdi mdi-eye-arrow-right-outline"></span>
         &nbsp;查看日志
+      </v-btn>&nbsp;
+      <a href="https://app.wequ.net/duck/device" target="_blank" style="color:#444;text-decoration:none">
+      <v-btn size="small" text v-if="!showLog && !notDevice">
+        <span class="mdi mdi-view-dashboard"></span>
+        &nbsp;管理后台
       </v-btn>
+      </a>
     </div>
     <div class="view-close-log-btn" v-if="showLog">
       <v-btn @click="showLog = false" density="compact" icon="mdi-eye-off-outline" size="small"></v-btn>
@@ -21,8 +27,9 @@
           <v-card class="mx-auto device-card" prepend-icon="mdi-monitor-cellphone-star" elevation="5" v-if="!notDevice">
             <template v-slot:title>
               <div style="font-size: 15px;font-weight: 600;display: inline;">{{ this.deviceInfo.device_name }}</div>
-              <div class="auto-online"><v-switch label="自动连接" true-value="yes" false-value="no"
-                  v-model="deviceInfo.auto_online" color="brown lighten-5" @change="updateOnline"></v-switch></div>
+              <div class="auto-online">
+              <v-switch :label="deviceInfo.auto_online == 'yes' ? '自动连接打开' : '自动连接关闭'" true-value="yes" false-value="no"
+                  v-model="deviceInfo.auto_online" color="info" @change="updateOnline"></v-switch></div>
             </template>
             <v-card-text>
               <div style="padding-left: 13px;">
@@ -87,9 +94,7 @@
         </v-card-title>
         <v-card-text>
           <h4>{{ updateName }}</h4>
-          <v-html>
-            {{ updateContent }}
-          </v-html>
+          <p :v-html="updateContent"></p>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -158,6 +163,10 @@ export default {
     updateOnline(){
       this.update = true
       this.addDevice()
+    },
+    goDash(){
+    console.log("ddd")
+    window.open(`https://www.cnblogs.com/guorongtao/`)
     },
     addDevice() {
       if (this.deviceInfo.device_id.length != 8 || this.deviceInfo.device_password.length < 6) {
@@ -239,9 +248,9 @@ export default {
   mounted() {
     this.getAppUpdate()
     let _this = this
-    window.addEventListener('pywebviewready', function () {
-      _this.getDevice()
-    })
+     setTimeout(() => {
+     this.getDevice()
+     },400)
     this.connectSuccess()
     this.writeLog()
   },
@@ -251,6 +260,10 @@ export default {
 }
 </script>
 <style>
+.v-switch .v-label{
+  font-size:14px;
+  margin-left: -3px
+}
 .device-card {
   background-color: #0093E9;
   background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
@@ -264,24 +277,24 @@ export default {
 .auto-online {
   width: 130px;
   position: absolute;
-  right: 0;
+  right: 10px;
   top: 0px;
 }
 
 .device-online {
   height: 360px;
-  margin-top: 40px;
+  margin-top: 43px;
   background-repeat: no-repeat;
-  background-size: 322px;
+  background-size: 301px;
   background-position: center;
   background-image: url(@/assets/device_online.png);
 }
 
 .device-offline {
   height: 360px;
-  margin-top: 40px;
+  margin-top: 44px;
   background-repeat: no-repeat;
-  background-size: 320px;
+  background-size: 300px;
   background-position: center;
   background-image: url(@/assets/device_offline.png);
   -webkit-filter: grayscale(100%);
@@ -295,7 +308,7 @@ export default {
   left: 74px;
   background: black;
   height: 430px;
-  width: 505px;
+  width: 500px;
   opacity: 0.4;
   color: #fff;
   padding: 10px;
@@ -309,6 +322,7 @@ export default {
   position: absolute;
   top: 170px;
   left: 73px;
+  z-index: 99
 }
 
 .view-close-log-btn {

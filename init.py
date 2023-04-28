@@ -37,7 +37,7 @@ def on_resized(width, height):
 
 def app(ifCef=False, if_mini=False):
     # 是否为开发环境
-    Config.devEnv = False
+    Config.devEnv = True
     # 前端页面目录
     if Config.devEnv:
         # 开发环境
