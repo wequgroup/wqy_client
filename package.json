@@ -11,10 +11,7 @@
     "initInstall:windows": "npm install --prefix .\\gui && pip install -r .\\pyapp\\requirements.txt && pip install cefpython3",
     "build": "shx rm -rf build && npm run build --prefix ./gui && run-script-os",
     "build:macos": "python pyapp/spec/getSpec.py --mac && pyinstaller --clean ./pyapp/spec/macos.spec",
-    "build:windows": "python pyapp\\spec\\getSpec.py && pyinstaller --clean .\\pyapp\\spec\\windows.spec",
-    "build:cef": "python pyapp\\spec\\getSpec.py && shx rm -rf buildCEF && npm run build --prefix ./gui && pyinstaller --clean .\\pyapp\\spec\\windows-cef.spec && shx mv .\\build\\windows-cef .\\buildCEF\\windows-cef",
-    "build:folder": "python pyapp\spec\getSpec.py && shx rm -rf build && npm run build --prefix ./gui && pyinstaller --clean .\pyapp\spec\windows-folder.spec",
-    "build:folder:cef": "python pyapp\spec\getSpec.py && shx rm -rf buildCEF && npm run build --prefix ./gui && pyinstaller --clean .\pyapp\spec\windows-folder-cef.spec && shx mv .\build\windows-folder-cef .\buildCEF\windows-folder-cef"
+    "build:windows": "python pyapp\\spec\\getSpec.py && pyinstaller --clean .\\pyapp\\spec\\windows.spec"
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
