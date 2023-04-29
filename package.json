@@ -1,7 +1,7 @@
 {
   "name": "wqy_client",
   "version": "1.0.1",
-  "description": "微趣鸭客户端。",
+  "description": "微趣鸭客户端",
   "author": "Mon",
   "scripts": {
     "init": "npm install -D shx && npm run clean && npm install && npm run initInstall",
