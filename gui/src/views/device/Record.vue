@@ -22,21 +22,21 @@
             <v-table height="200px" density="compact" fixed-header>
               <thead>
                 <tr>
+                  <th class="text-left" style="width: 170px;">
+                    ID
+                  </th>
                   <th class="text-left" style="width: 270px;">
                     脚本名称
                   </th>
-                  <th class="text-left">
-                    脚本ID
-                  </th>
                   <th class="text-left" style="width: 100px;">
-                    删除/测试
+                    操作
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="item in desserts" :key="item.record_id">
-                  <td>{{ item.record_name }}</td>
                   <td>{{ item.record_id }}</td>
+                  <td>{{ item.record_name }}</td>
                   <td><span class="mdi mdi-delete-outline" style="font-size: 1.3em;color: black;cursor: pointer;"
                       @click="deleteRecord(item.record_id)"></span>&nbsp;
                     <span class="mdi mdi-play-circle-outline" style="font-size: 1.3em;color: black;cursor: pointer;"

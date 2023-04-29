@@ -111,7 +111,7 @@
   </div>
 </template>
 <script>
-const v = 2
+const v = 1000
 import { getCurrentInstance } from 'vue'
 
 export default {
@@ -303,19 +303,19 @@ export default {
 
 .log {
   position: absolute;
-  z-index: 888;
-  top: 160px;
-  left: 74px;
-  background: black;
-  height: 430px;
-  width: 500px;
-  opacity: 0.4;
-  color: #fff;
-  padding: 10px;
-  font-size: 14px;
-  overflow-y: scroll;
-  overflow-x: scroll;
-  border-radius: 5px;
+    z-index: 888;
+    top: 160px;
+    left: 73px;
+    background: black;
+    height: 355px;
+    width: 381px;
+    opacity: 0.4;
+    color: #fff;
+    padding: 10px;
+    font-size: 14px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    border-radius: 5px;
 }
 
 .view-log-btn {
