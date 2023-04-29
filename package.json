@@ -30,8 +30,8 @@
     "build:folder": "python pyapp\spec\getSpec.py && shx rm -rf build && npm run build --prefix ./gui && pyinstaller --clean .\pyapp\spec\windows-folder.spec",
     "build:folder:cef": "python pyapp\spec\getSpec.py && shx rm -rf buildCEF && npm run build --prefix ./gui && pyinstaller --clean .\pyapp\spec\windows-folder-cef.spec && shx mv .\build\windows-folder-cef .\buildCEF\windows-folder-cef",
     "alembic": "run-script-os",
-    "alembic:macos": "cd ./pyapp/db/ && alembic revision --autogenerate -m "${m}" && alembic upgrade head && alembic upgrade head --sql > ../../static/db/migration.sql && alembic current > ../../static/db/version",
-    "alembic:windows": "cd ./pyapp/db/ && alembic.exe revision --autogenerate -m "${m}" && alembic.exe upgrade head && alembic.exe upgrade head --sql > ..\..\static\db\migration.sql && alembic.exe current > ..\..\static\db\version"
+    "alembic:macos": "cd ./pyapp/db/ && alembic revision --autogenerate -m \"${m}\" && alembic upgrade head && alembic upgrade head --sql > ../../static/db/migration.sql && alembic current > ../../static/db/version",
+    "alembic:windows": "cd ./pyapp/db/ && alembic.exe revision --autogenerate -m \"${m}\" && alembic.exe upgrade head && alembic.exe upgrade head --sql > ..\..\static\db\migration.sql && alembic.exe current > ..\..\static\db\version"
   },
   "devDependencies": {
     "nodemon": "^2.0.20",
