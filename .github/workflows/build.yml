@@ -36,7 +36,18 @@ jobs:
     - name: Run build
       run: npm run build
       
-    - name: Upload artifact
+    - name: NSIS (windows)
+      if: matrix.os == 'windows-latest'
+      uses: joncloud/makensis-action@v4
+      
+    - name: Upload artifact (macos)
+      if: matrix.os == 'macos-latest'
       uses: actions/upload-artifact@v3
       with:
-        path: build/WeDuck.*
+        path: build/WeDuck.app
+        
+    - name: Upload artifact (windows)
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        path: WeDuckInstall.exe
