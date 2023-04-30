@@ -8,9 +8,11 @@
     "clean": "shx rm -rf build node_modules package-lock.json gui/node_modules gui/package-lock.json",
     "initInstall": "run-script-os",
     "initInstall:macos": "npm install --prefix ./gui && pip install -r ./pyapp/requirements.txt",
-    "initInstall:windows": "npm install --prefix .\\gui && pip install -r .\\pyapp\\requirements.txt && pip install cefpython3",
+    "initInstall:linux": "npm install --prefix ./gui && pip install -r ./pyapp/requirements.txt",
+    "initInstall:windows": "npm install --prefix .\\gui && pip install -r .\\pyapp\\requirements.txt",
     "build": "shx rm -rf build && npm run build --prefix ./gui && run-script-os",
     "build:macos": "pyinstaller --clean ./pyapp/spec/macos.spec",
+    "build:linux": "pyinstaller --clean ./pyapp/spec/linux.spec",
     "build:windows": "pyinstaller --clean .\\pyapp\\spec\\windows.spec"
   },
   "devDependencies": {
