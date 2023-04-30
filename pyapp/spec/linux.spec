@@ -1,32 +1,24 @@
-
 # -*- mode: python ; coding: utf-8 -*-
 
 import os
 
 import PyInstaller.config
 
-# 存放最终打包成app的相对路径
 buildPath = 'build'
 PyInstaller.config.CONF['distpath'] = buildPath
 
-# 存放打包成app的中间文件的相对路径
 cachePath = os.path.join(buildPath, 'cache')
 if not os.path.exists(cachePath):
     os.makedirs(cachePath)
 PyInstaller.config.CONF['workpath'] = cachePath
 
-# icon相对路径
-icoPath = os.path.join('..', 'icon', 'logo.ico')
+icoPath = os.path.join('..', 'icon', 'logo.icns')
 
-# 项目名称
 appName = 'WeDuck'
 
-# 版本号
 version = '0.0.1'
 
-# 对Python字节码加密
 block_cipher = pyi_crypto.PyiBlockCipher(key='weduck889378294')
-
 
 a = Analysis(['../../main.py'],
             pathex=[],
@@ -44,24 +36,26 @@ a = Analysis(['../../main.py'],
 pyz = PYZ(a.pure, a.zipped_data,
             cipher=block_cipher)
 
-
 exe = EXE(pyz,
         a.scripts,
-        a.binaries,
-        a.zipfiles,
-        a.datas,
         [],
+        exclude_binaries=True,
         name=appName,
         debug=False,
         bootloader_ignore_signals=False,
         strip=False,
         upx=True,
-        upx_exclude=[],
-        runtime_tmpdir=None,
-        console=True,
+        console=False,
         disable_windowed_traceback=False,
-        target_arch=None,
         codesign_identity=None,
-        entitlements_file=None,
-        icon=icoPath)
+        entitlements_file=None)
+coll = COLLECT(exe,
+                a.binaries,
+                a.zipfiles,
+                a.datas,
+                strip=False,
+                upx=False,
+                upx_exclude=[],
+                name=appName)
 
+app = coll

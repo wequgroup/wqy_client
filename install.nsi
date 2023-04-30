@@ -1,5 +1,3 @@
-; 该脚本使用 HM VNISEdit 脚本编辑器向导产生
-
 ; 安装程序初始定义常量
 !define PRODUCT_NAME "WeDuck"
 !define PRODUCT_VERSION "1000"
@@ -55,10 +53,11 @@ BrandingText "微趣鸭"
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
+  File /r "build\WeDuck\*.*"
   CreateDirectory "$SMPROGRAMS\WeDuck"
   CreateShortCut "$SMPROGRAMS\WeDuck\WeDuck.lnk" "$INSTDIR\WeDuck.exe"
   CreateShortCut "$DESKTOP\WeDuck.lnk" "$INSTDIR\WeDuck.exe"
-  File "build\WeDuck.exe"
+  File "build\WeDuck\WeDuck.exe"
 SectionEnd
 
 Section -AdditionalIcons
@@ -86,7 +85,7 @@ Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\WeDuck.exe"
-  
+
   Delete "$INSTDIR\*.pyd"
   Delete "$INSTDIR\*.dll"
   Delete "$INSTDIR\*.zip"
