@@ -11,7 +11,7 @@
     "initInstall:linux": "npm install --prefix ./gui && pip install -r ./pyapp/requirements.txt",
     "initInstall:windows": "npm install --prefix .\\gui && pip install -r .\\pyapp\\requirements.txt",
     "build": "shx rm -rf build && npm run build --prefix ./gui && run-script-os",
-    "build:macos": "pyinstaller --clean ./pyapp/spec/macos.spec",
+    "build:macos": "pyinstaller --clean ./pyapp/spec/macos.spec && chmod +x ./create_dmg.sh && ./create_dmg.sh ./build/WeDuck.app",
     "build:linux": "pyinstaller --clean ./pyapp/spec/linux.spec",
     "build:windows": "pyinstaller --clean .\\pyapp\\spec\\windows.spec"
   },
