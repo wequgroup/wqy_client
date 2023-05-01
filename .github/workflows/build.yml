@@ -40,11 +40,15 @@ jobs:
       if: matrix.os == 'windows-latest'
       uses: joncloud/makensis-action@v4
       
+    - name: Packing DMG (macos)
+      if: matrix.os == 'macos-latest'
+      run: chmod +x create_dmg.sh && create_dmg.sh build/WeDuck.app
+      
     - name: Upload artifact (macos)
       if: matrix.os == 'macos-latest'
       uses: actions/upload-artifact@v3
       with:
-        path: build/WeDuck.app
+        path: compressed_app.dmg
         
     - name: Upload artifact (windows)
       if: matrix.os == 'windows-latest'
