@@ -68,4 +68,3 @@ coll = COLLECT(exe,
             upx=True,
             upx_exclude=[],
             name=appName)
-

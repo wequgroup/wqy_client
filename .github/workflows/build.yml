@@ -1,0 +1,53 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        node-version: [20.0.0]
+        python-version: [3.11.3]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    - name: Upgrade "pip"
+      run: python -m pip install --upgrade pip
+
+    - name: Install dependencies
+      run: npm run init
+
+    - name: Run build
+      run: npm run build
+      
+    - name: NSIS (windows)
+      if: matrix.os == 'windows-latest'
+      uses: joncloud/makensis-action@v4
+      
+    - name: Upload artifact (macos)
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        path: compressed_app.dmg
+        
+    - name: Upload artifact (windows)
+      if: matrix.os == 'windows-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        path: WeDuckInstall.exe

@@ -72,4 +72,3 @@ app = BUNDLE(coll,
             icon=icoPath,
             version=version,
             bundle_identifier=None)
-

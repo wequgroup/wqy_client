@@ -1,9 +1,7 @@
-; ¸Ã½Å±¾Ê¹ÓÃ HM VNISEdit ½Å±¾±à¼­Æ÷Ïòµ¼²úÉú
-
-; °²×°³ÌĞò³õÊ¼¶¨Òå³£Á¿
+; å®‰è£…ç¨‹åºåˆå§‹å®šä¹‰å¸¸é‡
 !define PRODUCT_NAME "WeDuck"
 !define PRODUCT_VERSION "1000"
-!define PRODUCT_PUBLISHER "Î¢È¤ÄÎÌØ"
+!define PRODUCT_PUBLISHER "å¾®è¶£å¥ˆç‰¹"
 !define PRODUCT_WEB_SITE "https://wequ.net"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\WeDuck.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -11,38 +9,38 @@
 
 SetCompressor lzma
 
-; ------ MUI ÏÖ´ú½çÃæ¶¨Òå (1.67 °æ±¾ÒÔÉÏ¼æÈİ) ------
+; ------ MUI ç°ä»£ç•Œé¢å®šä¹‰ (1.67 ç‰ˆæœ¬ä»¥ä¸Šå…¼å®¹) ------
 !include "MUI.nsh"
 
-; MUI Ô¤¶¨Òå³£Á¿
+; MUI é¢„å®šä¹‰å¸¸é‡
 !define MUI_ABORTWARNING
 !define MUI_ICON "pyapp\icon\logo.ico"
 !define MUI_UNICON "pyapp\icon\logo.ico"
 
-; »¶Ó­Ò³Ãæ
+; æ¬¢è¿é¡µé¢
 !insertmacro MUI_PAGE_WELCOME
-; Ğí¿ÉĞ­ÒéÒ³Ãæ
+; è®¸å¯åè®®é¡µé¢
 !insertmacro MUI_PAGE_LICENSE "licence.txt"
-; °²×°Ä¿Â¼Ñ¡ÔñÒ³Ãæ
+; å®‰è£…ç›®å½•é€‰æ‹©é¡µé¢
 !insertmacro MUI_PAGE_DIRECTORY
-; °²×°¹ı³ÌÒ³Ãæ
+; å®‰è£…è¿‡ç¨‹é¡µé¢
 !insertmacro MUI_PAGE_INSTFILES
-; °²×°Íê³ÉÒ³Ãæ
+; å®‰è£…å®Œæˆé¡µé¢
 !define MUI_FINISHPAGE_SHOWREADME
 !define MUI_FINISHPAGE_SHOWREADME_Function AutoBoot
-!define MUI_FINISHPAGE_SHOWREADME_TEXT "Ìí¼Ó¿ª»úÆô¶¯"
+!define MUI_FINISHPAGE_SHOWREADME_TEXT "æ·»åŠ å¼€æœºå¯åŠ¨"
 !define MUI_FINISHPAGE_RUN "$INSTDIR\WeDuck.exe"
 !insertmacro MUI_PAGE_FINISH
 
-; °²×°Ğ¶ÔØ¹ı³ÌÒ³Ãæ
+; å®‰è£…å¸è½½è¿‡ç¨‹é¡µé¢
 !insertmacro MUI_UNPAGE_INSTFILES
 
-; °²×°½çÃæ°üº¬µÄÓïÑÔÉèÖÃ
+; å®‰è£…ç•Œé¢åŒ…å«çš„è¯­è¨€è®¾ç½®
 !insertmacro MUI_LANGUAGE "SimpChinese"
 
-; °²×°Ô¤ÊÍ·ÅÎÄ¼ş
+; å®‰è£…é¢„é‡Šæ”¾æ–‡ä»¶
 !insertmacro MUI_RESERVEFILE_INSTALLOPTIONS
-; ------ MUI ÏÖ´ú½çÃæ¶¨Òå½áÊø ------
+; ------ MUI ç°ä»£ç•Œé¢å®šä¹‰ç»“æŸ ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "WeDuckInstall.exe"
@@ -50,7 +48,7 @@ InstallDir "$PROGRAMFILES\WeDuck"
 InstallDirRegKey HKLM "${PRODUCT_UNINST_KEY}" "UninstallString"
 ShowInstDetails show
 ShowUnInstDetails show
-BrandingText "Î¢È¤Ñ¼"
+BrandingText "å¾®è¶£é¸­"
 
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
@@ -80,14 +78,14 @@ Section -Post
 SectionEnd
 
 /******************************
- *  ÒÔÏÂÊÇ°²×°³ÌĞòµÄĞ¶ÔØ²¿·Ö  *
+ *  ä»¥ä¸‹æ˜¯å®‰è£…ç¨‹åºçš„å¸è½½éƒ¨åˆ†  *
  ******************************/
 
 Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
   Delete "$INSTDIR\WeDuck.exe"
-  
+
   Delete "$INSTDIR\*.pyd"
   Delete "$INSTDIR\*.dll"
   Delete "$INSTDIR\*.zip"
@@ -119,16 +117,16 @@ Section Uninstall
   SetAutoClose true
 SectionEnd
 
-#-- ¸ù¾İ NSIS ½Å±¾±à¼­¹æÔò£¬ËùÓĞ Function Çø¶Î±ØĞë·ÅÖÃÔÚ Section Çø¶ÎÖ®ºó±àĞ´£¬ÒÔ±ÜÃâ°²×°³ÌĞò³öÏÖÎ´¿ÉÔ¤ÖªµÄÎÊÌâ¡£--#
+#-- æ ¹æ® NSIS è„šæœ¬ç¼–è¾‘è§„åˆ™ï¼Œæ‰€æœ‰ Function åŒºæ®µå¿…é¡»æ”¾ç½®åœ¨ Section åŒºæ®µä¹‹åç¼–å†™ï¼Œä»¥é¿å…å®‰è£…ç¨‹åºå‡ºç°æœªå¯é¢„çŸ¥çš„é—®é¢˜ã€‚--#
 
 Function un.onInit
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "ÄúÈ·ÊµÒªÍêÈ«ÒÆ³ı $(^Name) £¬¼°ÆäËùÓĞµÄ×é¼ş£¿" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "æ‚¨ç¡®å®è¦å®Œå…¨ç§»é™¤ $(^Name) ï¼ŒåŠå…¶æ‰€æœ‰çš„ç»„ä»¶ï¼Ÿ" IDYES +2
   Abort
 FunctionEnd
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) ÒÑ³É¹¦µØ´ÓÄúµÄ¼ÆËã»úÒÆ³ı¡£"
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) å·²æˆåŠŸåœ°ä»æ‚¨çš„è®¡ç®—æœºç§»é™¤ã€‚"
 FunctionEnd
 
 Function AutoBoot

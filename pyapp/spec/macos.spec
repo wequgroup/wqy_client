@@ -56,7 +56,7 @@ exe = EXE(pyz,
         upx=True,
         console=False,
         disable_windowed_traceback=False,
-        target_arch=None,  # x86_64, arm64, universal2
+        target_arch=None,
         codesign_identity=None,
         entitlements_file=None)
 coll = COLLECT(exe,
@@ -64,7 +64,7 @@ coll = COLLECT(exe,
                 a.zipfiles,
                 a.datas,
                 strip=False,
-                upx=True,
+                upx=False,
                 upx_exclude=[],
                 name=appName)
 app = BUNDLE(coll,
